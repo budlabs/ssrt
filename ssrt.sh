@@ -1,6 +1,7 @@
 #!/bin/bash
 
 declare -i ssrpid clop clod
+declare -r infile=/tmp/ssrt/in
 
 main() {
   :
@@ -17,7 +18,20 @@ main() {
 }
 
 start() {
+
   ERM start
+
+  msg record-start
+
+  { < <(tail -f "$infile") \
+    > /dev/null 2>&1       \
+      simplescreenrecorder --start-hidden
+    rm -f "${infile:?}" ;} &
+}
+
+msg() {
+  mkdir -p "${infile%/*}"
+  echo "$*" >> "$infile"
 }
 
 play() {
@@ -30,6 +44,7 @@ pause() {
 
 stop() {
   ERM stop
+  msg quit
 }
 
 preview() {
