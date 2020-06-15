@@ -1,5 +1,74 @@
 #!/bin/bash
 
+declare -i ssrpid clop clod
+
+main() {
+  :
+  ssrpid=$(pidof simplescreenrecorder)
+
+  if ((clop)); then
+    # play/pause
+    ERM play/pause
+  elif ((ssrpid)); then
+    stop
+  else
+    start
+  fi
+}
+
+start() {
+  ERM start
+}
+
+play() {
+  ERM play
+}
+
+pause() {
+  ERM pause
+}
+
+stop() {
+  ERM stop
+}
+
+preview() {
+  ERM preview
+}
+
+save() {
+  ERM save
+}
+
+
+ERX() { >&2 echo "$*" && exit 1 ;}
+ERM() { >&2 echo "$*" ;}
+
+while getopts :pd: o; do
+  case "$o" in
+    p ) clop=1 ;;
+    d ) clod=$OPTARG ;;
+    * ) ERX incorrect option abort ;;
+  esac
+done ; shift $((OPTIND-1))
+
+main "$@"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # simplescreenrecorder --help
 # Usage: simplescreenrecorder [OPTIONS]
 
