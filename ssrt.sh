@@ -4,51 +4,17 @@ declare -i ssrpid clop clod dunstid=1338
 declare -r infile=/tmp/ssrt/in
 
 main() {
-  :
+  
   ssrpid=$(pidof simplescreenrecorder)
 
   if ((clop)); then
-    # play/pause
-    ERM play/pause
+    play-toggle
   elif ((ssrpid)); then
     stop
   else
     start
   fi
-}
 
-start() {
-
-  ERM start
-
-  msg record-pause
-
-  { 
-    while ((clod--)); do
-      dunstify -r $dunstid "recording starts in $((clod+1))"
-      sleep 1
-    done
-    
-    dunstify --close $dunstid
-
-    < <(tail -f "$infile") \
-    > /dev/null 2>&1       \
-      simplescreenrecorder --start-hidden
-    rm -f "${infile:?}"
-  } &
-}
-
-msg() {
-  mkdir -p "${infile%/*}"
-  echo "$*" >> "$infile"
-}
-
-play() {
-  ERM play
-}
-
-pause() {
-  ERM pause
 }
 
 stop() {
@@ -64,6 +30,55 @@ save() {
   ERM save
 }
 
+play-toggle() {
+  local state m
+  ERM play/pause
+
+  ((ssrpid)) || ERX ssr is not running
+  [[ -f $infile ]] || ERX could not send command, no infile
+
+  state=$(tail -n 1 "$infile")
+
+  [[ $state = record-start ]] \
+    && m=record-pause || m=record-start
+
+  msg "$m"
+
+}
+
+start() {
+
+  ERM start
+
+  msg record-pause
+
+  { 
+
+    ((clod)) && {
+      if command -v dunstifysdf >/dev/null ; then
+        while ((clod--)); do
+          dunstify -r $dunstid "recording starts in $((clod+1))"
+          sleep 1
+        done
+        
+        dunstify --close $dunstid
+      else
+        sleep "$clod"
+      fi
+    }
+    
+
+    < <(tail -f "$infile") \
+    > /dev/null 2>&1       \
+      simplescreenrecorder --start-hidden
+    rm -f "${infile:?}"
+  } &
+}
+
+msg() {
+  mkdir -p "${infile%/*}"
+  echo "$*" >> "$infile"
+}
 
 ERX() { >&2 echo "$*" && exit 1 ;}
 ERM() { >&2 echo "$*" ;}
