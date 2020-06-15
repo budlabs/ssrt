@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -i ssrpid clop clod
+declare -i ssrpid clop clod dunstid=1338
 declare -r infile=/tmp/ssrt/in
 
 main() {
@@ -21,12 +21,21 @@ start() {
 
   ERM start
 
-  msg record-start
+  msg record-pause
 
-  { < <(tail -f "$infile") \
+  { 
+    while ((clod--)); do
+      dunstify -r $dunstid "recording starts in $((clod+1))"
+      sleep 1
+    done
+    
+    dunstify --close $dunstid
+
+    < <(tail -f "$infile") \
     > /dev/null 2>&1       \
       simplescreenrecorder --start-hidden
-    rm -f "${infile:?}" ;} &
+    rm -f "${infile:?}"
+  } &
 }
 
 msg() {
