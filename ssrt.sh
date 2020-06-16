@@ -2,6 +2,8 @@
 
 declare -i ssrpid clop clod dunstid=1338
 declare -r infile=/tmp/ssrt/in
+declare -r ssrcnf=~/.ssr/settings.conf
+declare -r ssrsts=~/.ssr/stats
 
 main() {
   
@@ -19,8 +21,30 @@ main() {
 
 stop() {
   ERM stop
+  opf=$(getoutputpath)
+  ERM opf "$opf"
+  exit
   msg quit
 }
+
+getoutputpath() {
+
+  # in config find directory
+  # file=/home/bud/ssrop.mkv
+
+  # in stats file
+  # file_name         ssrop-2020-06-16_19.24.43.mkv
+  awk '
+
+    /^file=/ { gsub(/^file=|[^/]+$/,"")    ; dir=$0 }
+    /^file_name/ { gsub(/^file_name\s+/,""); fil=$0 }
+
+    END { print dir fil }
+
+  ' "$ssrcnf" "$ssrsts"
+}
+
+
 
 preview() {
   ERM preview
@@ -67,10 +91,13 @@ start() {
       fi
     }
     
+    
 
     < <(tail -f "$infile") \
     > /dev/null 2>&1       \
-      simplescreenrecorder --start-hidden
+      simplescreenrecorder --start-hidden           \
+                           --settingsfile="$ssrcnf" \
+                           --statsfile="$ssrsts"
     rm -f "${infile:?}"
   } &
 }
