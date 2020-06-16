@@ -4,6 +4,7 @@ declare -i ssrpid clop clod dunstid=1338
 declare -r infile=/tmp/ssrt/in
 declare -r ssrcnf=~/.ssr/settings.conf
 declare -r ssrsts=~/.ssr/stats
+declare -r previewcommand=mpv
 
 menus=(i3menu dmenu rofi)
 
@@ -20,6 +21,7 @@ main() {
   fi
 
 }
+
 
 menu() {
 
@@ -42,14 +44,41 @@ menu() {
   esac < <(printf "%s${1:+\n}" "${@}")
 }
 
+preview() {
+  local f=$1
+
+  eval "$previewcommand '$f'" > /dev/null 2>&1
+
+  menu -p "Save file? " Yes No Maybe New
+}
+
 stop() {
+
+  local state opf choice
+
   ERM stop
-  opf=$(getoutputpath)
-  ERM opf "$opf"
-  ask=$(menu -p "THE PROMPT: ")
-  ERM you selected "$ask"
-  exit
-  msg quit
+
+  state=$(getlaststate)
+
+  if [[ $state = record-start ]]; then
+    msg record-save
+
+    opf=$(getoutputpath)
+
+    [[ -f $opf ]] || ERX could not find output file "$opf"
+    command -v "$previewcommand" >/dev/null || choice=Yes
+
+    while [[ ${choice:=Maybe} = Maybe ]]; do
+      choice=$(preview "$opf")
+    done
+    
+    ERM o pf "$opf"
+    ERM "ccc$choice"
+    exit
+    msg quit
+  else
+    play-toggle
+  fi
 }
 
 getoutputpath() {
@@ -70,11 +99,6 @@ getoutputpath() {
 }
 
 
-
-preview() {
-  ERM preview
-}
-
 save() {
   ERM save
 }
@@ -84,14 +108,21 @@ play-toggle() {
   ERM play/pause
 
   ((ssrpid)) || ERX ssr is not running
-  [[ -f $infile ]] || ERX could not send command, no infile
-
-  state=$(tail -n 1 "$infile")
+  state=$(getlaststate)
 
   [[ $state = record-start ]] \
     && m=record-pause || m=record-start
 
   msg "$m"
+
+}
+
+getlaststate() {
+
+  [[ -f $infile ]] \
+    || ERX could not send command, no infile
+
+  tail -n 1 "$infile"
 
 }
 
