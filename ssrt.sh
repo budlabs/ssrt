@@ -5,6 +5,8 @@ declare -r infile=/tmp/ssrt/in
 declare -r ssrcnf=~/.ssr/settings.conf
 declare -r ssrsts=~/.ssr/stats
 
+menus=(i3menu dmenu rofi)
+
 main() {
   
   ssrpid=$(pidof simplescreenrecorder)
@@ -19,10 +21,33 @@ main() {
 
 }
 
+menu() {
+
+  local m o prompt OPTARG OPTIND
+  
+  for m in "${menus[@]}"; do
+    command -v "$m" > /dev/null && break
+    unset m
+  done
+
+  while getopts :p: o; do
+    [[ $o = p ]] && prompt=$OPTARG
+  done ; shift $((OPTIND-1))
+
+  case "$m" in
+    dmenu  ) "$m" -p "$prompt" ;;
+    rofi   ) "$m" -dmenu -p "$prompt" ;;
+    i3menu ) "$m" -p "$prompt" ;;
+    *      ) ERX cannot find menu command ;;
+  esac < <(printf "%s${1:+\n}" "${@}")
+}
+
 stop() {
   ERM stop
   opf=$(getoutputpath)
   ERM opf "$opf"
+  ask=$(menu -p "THE PROMPT: ")
+  ERM you selected "$ask"
   exit
   msg quit
 }
