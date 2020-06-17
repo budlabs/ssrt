@@ -9,7 +9,7 @@ start() {
   { 
 
     ((clod)) && {
-      if command -v dunstify >/dev/null ; then
+      if ifcmd dunstify ; then
         while ((clod--)); do
           dunstify -r "$dunstid" "recording starts in $((clod+1))"
           sleep 1

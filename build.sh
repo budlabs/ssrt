@@ -7,6 +7,15 @@ redel='#@@DELETE[[:space:]]*$'
 resrc='#@@SOURCE[[:space:]](.+)$'
 output="${_dir}/${_dir##*/}.sh"
 
+[[ -f $_dir/defaultconf ]] && {
+  echo '#!/bin/bash'
+  echo
+  echo 'createconf() {'
+  printf "cat << 'EOB' > \"\$1\"\n%s\nEOB\n" \
+    "$(< "$_dir/defaultconf")"
+  echo '}'
+} > "$_dir/lib/createconf.sh"
+
 while IFS= read -r line ; do
   [[ $line =~ $redel ]] && continue
   if [[ $line =~ $resrc ]]; then

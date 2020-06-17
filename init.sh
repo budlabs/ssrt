@@ -1,30 +1,25 @@
 #!/bin/bash
 
-declare -i ssrpid clop clod dunstid=1338
+declare -i ssrpid dunstid=1338
 
-declare -r infile=/tmp/ssrt/in
-declare -r ssrcnf=~/.ssr/settings.conf
-declare -r ssrsts=~/.ssr/stats
-declare -r previewcommand=mpv
-
-declare defaultname
-
-defaultname=$(date +%y%m%d%-H:%M:%S)
-
-declare savedir
-
-[[ -z $savedir ]] && {
-  savedir=~
-  command -v xdg-user-dir >/dev/null \
-    && savedir=$(xdg-user-dir VIDEOS)
-}
-
-menus=(i3menu dmenu rofi)
-
-while getopts :pd: o; do
+declare -i clop clod
+while getopts :pd:c: o; do
   case "$o" in
     p ) clop=1 ;;
     d ) clod=$OPTARG ;;
+    c ) cloc=$OPTARG ;;
     * ) ERX incorrect option abort ;;
   esac
 done ; shift $((OPTIND-1))
+
+declare -r _confdir=${cloc:-~/.ssr}
+declare -r _conffile=${_confdir}/ssrt.conf
+declare -r _ssrcnf="$_confdir"/settings.conf
+declare -r _ssrsts="$_confdir"/stats
+
+[[ -f "$_conffile" ]] || { createconf "$_conffile" ;}
+
+[[ -z $savedir ]] && {
+  savedir=~
+  ifcmd xdg-user-dir && savedir=$(xdg-user-dir VIDEOS)
+}

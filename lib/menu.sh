@@ -5,7 +5,7 @@ menu() {
   local m o prompt OPTARG OPTIND
   
   for m in "${menus[@]}"; do
-    command -v "$m" > /dev/null && break
+    ifcmd "$m" && break
     unset m
   done
 
