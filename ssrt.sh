@@ -1,10 +1,23 @@
 #!/bin/bash
 
 declare -i ssrpid clop clod dunstid=1338
+
 declare -r infile=/tmp/ssrt/in
 declare -r ssrcnf=~/.ssr/settings.conf
 declare -r ssrsts=~/.ssr/stats
 declare -r previewcommand=mpv
+
+declare defaultname
+
+defaultname=$(date +%y%m%d%-H:%M:%S)
+
+declare savedir
+
+[[ -z $savedir ]] && {
+  savedir=~
+  command -v xdg-user-dir >/dev/null \
+    && savedir=$(xdg-user-dir VIDEOS)
+}
 
 menus=(i3menu dmenu rofi)
 
@@ -32,14 +45,15 @@ menu() {
     unset m
   done
 
-  while getopts :p: o; do
+  while getopts :p:f: o; do
     [[ $o = p ]] && prompt=$OPTARG
+    [[ $o = f ]] && filter=$OPTARG
   done ; shift $((OPTIND-1))
 
   case "$m" in
     dmenu  ) "$m" -p "$prompt" ;;
-    rofi   ) "$m" -dmenu -p "$prompt" ;;
-    i3menu ) "$m" -p "$prompt" ;;
+    rofi   ) "$m" -dmenu -p "$prompt" -filter "$filter" ;;
+    i3menu ) "$m" -p "$prompt" -f "$filter" ;;
     *      ) ERX cannot find menu command ;;
   esac < <(printf "%s${1:+\n}" "${@}")
 }
@@ -71,14 +85,41 @@ stop() {
     while [[ ${choice:=Maybe} = Maybe ]]; do
       choice=$(preview "$opf")
     done
+
+    [[ $choice = Yes ]] && save "$opf"
     
-    ERM o pf "$opf"
-    ERM "ccc$choice"
-    exit
+    rm -f "$opf"
+    [[ $choice = New ]] && exec "$0" 
+
     msg quit
   else
     play-toggle
   fi
+}
+
+save() {
+  local f=$1
+  declare -i validpath
+
+  until ((validpath)); do
+
+    path=$(menu -p "Save as: " -f "${savedir/~/'~'}")
+    path=${path/'~'/~}
+
+    [[ -z $path ]] && {
+      confirm=$(menu -p "Delete $f ? " No Yes)
+      [[ $confirm = Yes ]] && return
+    }
+
+    [[ ${path} =~ ^/ ]] && validpath=1
+  done
+
+  [[ -d $path ]] && path+=/$defaultname
+
+  [[ $path =~ .+[^/]+([.].+)$ ]] && path=${path%.*}
+  mkdir -p "${path%/*}"
+
+  mv "$f" "$path"."${f##*.}"
 }
 
 getoutputpath() {
@@ -98,10 +139,6 @@ getoutputpath() {
   ' "$ssrcnf" "$ssrsts"
 }
 
-
-save() {
-  ERM save
-}
 
 play-toggle() {
   local state m
@@ -135,7 +172,7 @@ start() {
   { 
 
     ((clod)) && {
-      if command -v dunstifysdf >/dev/null ; then
+      if command -v dunstify >/dev/null ; then
         while ((clod--)); do
           dunstify -r $dunstid "recording starts in $((clod+1))"
           sleep 1
