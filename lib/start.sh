@@ -11,11 +11,11 @@ start() {
     ((clod)) && {
       if command -v dunstify >/dev/null ; then
         while ((clod--)); do
-          dunstify -r $dunstid "recording starts in $((clod+1))"
+          dunstify -r "$dunstid" "recording starts in $((clod+1))"
           sleep 1
         done
         
-        dunstify --close $dunstid
+        dunstify --close "$dunstid"
       else
         sleep "$clod"
       fi
