@@ -30,5 +30,8 @@ Show help and exit.
 `--version`|`-v`  
 Show version and exit.
 
+## license
+
+**ssrt** is licensed with the **BSD-2-CLAUSE license**
 
 

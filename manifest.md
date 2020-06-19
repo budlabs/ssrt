@@ -2,11 +2,12 @@
 description: >
   SHORT DESCRIPTION
 updated:       2020-06-19
-version:       2020.06.19.39
+version:       2020.06.19.41
 author:        budRich
 repo:          https://github.com/budlabs
 created:       2020-06-19
 type:          default
+license:       bsd-2-clause
 dependencies:  [bash, gawk, sed]
 see-also:      [bash(1), awk(1), sed(1)]
 environ:
