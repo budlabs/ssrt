@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-ssrt - version: 2020.06.19.41
+ssrt - version: 2020.06.19.42
 updated: 2020-06-19 by budRich
 EOB
 }
