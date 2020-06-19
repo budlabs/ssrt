@@ -2,21 +2,32 @@
 
 main() {
 
-  if ((_clop)); then
+  declare -i _ssrpid _dunstid=1338
+  declare -r _confdir=${__o[config-dir]:-~/.ssr}
+  declare -r _conffile=${_confdir}/ssrt.conf
+  declare -r _ssrcnf="$_confdir"/settings.conf
+  declare -r _ssrsts="$_confdir"/stats
+
+  _ssrpid=$(pidof simplescreenrecorder)
+
+  [[ -f "$_conffile" ]] || { createconf "$_confdir" ;}
+  parseconf "$_conffile"
+
+  [[ -z $_savedir ]] && _savedir=~ \
+    && ifcmd xdg-user-dir          \
+    && _savedir=$(xdg-user-dir VIDEOS)
+
+  if ((__o[pause])); then
     play-toggle
   elif ((_ssrpid)); then
     stop
   else
-    start
+    launch
   fi
 
 }
 
-_source=$(readlink -f "${BASH_SOURCE[0]}") #@@DELETE
-_dir=${_source%/*}                         #@@DELETE
-
-for f in "$_dir/lib/"* ; do source "$f" ; done #@@SOURCE lib
-unset f                                        #@@DELETE
-source "$_dir/init.sh"                         #@@SOURCE init.sh
-
-main "$@"
+___source=$(readlink -f "${BASH_SOURCE[0]}")      #bashbud
+___dir=${___source%/*}                            #bashbud
+source "$___dir/init.sh"                          #bashbud
+main "$@"                                         #bashbud

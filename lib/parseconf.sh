@@ -3,8 +3,7 @@
 parseconf() {
 
   local re sp gr
-  sp='[[:space:]]'
-  gr='[[:graph:]]'
+  sp='[[:space:]]' gr='[[:graph:]]'
   re="^${sp}*(${gr}+)${sp}*=${sp}*(.+)\$"
 
   # default config values:
@@ -13,6 +12,7 @@ parseconf() {
   declare -g  _defaultname=testdef
   declare -g  _timeformat='%y%m%d%-H:%M:%S'
   declare -g  _savedir=
+  declare -g  _custommenu=
   declare -ga _menus=(i3menu dmenu rofi)
 
   while IFS= read -r line ;do
@@ -26,6 +26,7 @@ parseconf() {
         defaultname    ) _defaultname=$val    ;;
         timeformat     ) _timeformat=$val     ;;
         savedir        ) _savedir=$val        ;;
+        custommenu     ) _custommenu=$val        ;;
         menus) mapfile -td, _menus <<< "$val" ;;
         *              ) continue             ;;
       esac

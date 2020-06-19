@@ -2,10 +2,10 @@
 
 getoutputpath() {
 
-  # in config find directory
+  # in config (_ssrcnf) get directory
   # file=/home/bud/ssrop.mkv
-  # in stats file
-  # file_name         ssrop-2020-06-16_19.24.43.mkv
+  # in stats file (_ssrsts) get filename
+  # file_name  ssrop-2020-06-16_19.24.43.mkv
   
   awk '
 

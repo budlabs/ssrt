@@ -1,27 +1,84 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-declare -i _ssrpid _dunstid=1338
+___printversion(){
+  
+cat << 'EOB' >&2
+ssrt - version: 2020.06.19.39
+updated: 2020-06-19 by budRich
+EOB
+}
 
-declare -i _clop _clod
-while getopts :pd:c: o; do
-  case "$o" in
-    p ) _clop=1 ;;
-    d ) _clod=$OPTARG ;;
-    c ) _cloc=$OPTARG ;;
-    * ) ERX incorrect option abort ;;
+
+# environment variables
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+
+
+___printhelp(){
+  
+cat << 'EOB' >&2
+ssrt - SHORT DESCRIPTION
+
+
+SYNOPSIS
+--------
+ssrt [--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR]
+ssrt --help|-h
+ssrt --version|-v
+
+OPTIONS
+-------
+
+--pause|-p  
+
+--delay|-d SECONDS  
+
+--select|-s  
+
+--config-dir|-c DIR  
+
+--help|-h  
+Show help and exit.
+
+
+--version|-v  
+Show version and exit.
+EOB
+}
+
+
+for ___f in "${___dir}/lib"/*; do
+  source "$___f"
+done
+
+declare -A __o
+options="$(
+  getopt --name "[ERROR]:ssrt" \
+    --options "pd:sc:hv" \
+    --longoptions "pause,delay:,select,config-dir:,help,version," \
+    -- "$@" || exit 77
+)"
+
+eval set -- "$options"
+unset options
+
+while true; do
+  case "$1" in
+    --pause      | -p ) __o[pause]=1 ;; 
+    --delay      | -d ) __o[delay]="${2:-}" ; shift ;;
+    --select     | -s ) __o[select]=1 ;; 
+    --config-dir | -c ) __o[config-dir]="${2:-}" ; shift ;;
+    --help       | -h ) ___printhelp && exit ;;
+    --version    | -v ) ___printversion && exit ;;
+    -- ) shift ; break ;;
+    *  ) break ;;
   esac
-done ; shift $((OPTIND-1))
+  shift
+done
 
-declare -r _confdir=${_cloc:-~/.ssr}
-declare -r _conffile=${_confdir}/ssrt.conf
-declare -r _ssrcnf="$_confdir"/settings.conf
-declare -r _ssrsts="$_confdir"/stats
+[[ ${__lastarg:="${!#:-}"} =~ ^--$|${0}$ ]] \
+  && __lastarg="" 
 
-_ssrpid=$(pidof simplescreenrecorder)
 
-[[ -f "$_conffile" ]] || { createconf "$_conffile" ;}
-parseconf "$_conffile"
 
-[[ -z $_savedir ]] && _savedir=~ \
-  && ifcmd xdg-user-dir          \
-  && _savedir=$(xdg-user-dir VIDEOS)
+
+

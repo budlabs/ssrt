@@ -17,7 +17,8 @@ stop() {
     ifcmd "$_previewcommand" || choice=Yes
 
     while [[ ${choice:=Maybe} = Maybe ]]; do
-      choice=$(preview "$opf")
+      eval "$_previewcommand '$opf'" > /dev/null 2>&1
+      choice=$(menu -p "Save file? " Yes No Maybe New)
       : "${choice:=No}"
     done
 

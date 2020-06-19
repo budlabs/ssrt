@@ -22,8 +22,19 @@ save() {
     [[ -n $_timeformat ]] && path+=$(date +"$_timeformat")
   }
 
+  # remove file extension entered by user
   [[ $path =~ .+[^/]+([.].+)$ ]] && path=${path%.*}
+
+  # append same extension as the recorded file
+  path+=".${f##*.}"
+
   mkdir -p "${path%/*}"
+
+  # if target file already exist create a unique
+  # filename file1.file2...
+  while [[ -f $path ]]; do
+    path="${path%.*}$((++i)).${f##*.}"
+  done
 
   mv "$f" "$path"."${f##*.}"
 }

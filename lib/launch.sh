@@ -1,27 +1,28 @@
 #!/bin/bash
 
-start() {
+launch() {
 
-  ERM start
+  declare -i del=${__o[delay]}
+  echo record-start > "$_infile"
 
-  msg record-pause
 
-  { 
+  area "${__o[select]:+fixed}"
 
-    ((_clod)) && {
+  {
+    ((del)) && {
       if ifcmd dunstify ; then
-        while ((_clod--)); do
-          dunstify -r "$_dunstid" "recording starts in $((_clod+1))"
+        while ((del--)); do
+          dunstify -r "$_dunstid" "recording starts in $((del+1))"
           sleep 1
         done
         
         dunstify --close "$_dunstid"
       else
-        sleep "$_clod"
+        notify-send --expire-time "$del" \
+          "recording delayed $del seconds."
+        sleep "${del}"
       fi
     }
-    
-    
 
     < <(tail -f "$_infile") \
     > /dev/null 2>&1       \
