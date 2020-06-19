@@ -1,12 +1,10 @@
 #!/bin/bash
 
 main() {
-  
-  ssrpid=$(pidof simplescreenrecorder)
 
-  if ((clop)); then
+  if ((_clop)); then
     play-toggle
-  elif ((ssrpid)); then
+  elif ((_ssrpid)); then
     stop
   else
     start

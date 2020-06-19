@@ -8,26 +8,26 @@ start() {
 
   { 
 
-    ((clod)) && {
+    ((_clod)) && {
       if ifcmd dunstify ; then
-        while ((clod--)); do
-          dunstify -r "$dunstid" "recording starts in $((clod+1))"
+        while ((_clod--)); do
+          dunstify -r "$_dunstid" "recording starts in $((_clod+1))"
           sleep 1
         done
         
-        dunstify --close "$dunstid"
+        dunstify --close "$_dunstid"
       else
-        sleep "$clod"
+        sleep "$_clod"
       fi
     }
     
     
 
-    < <(tail -f "$infile") \
+    < <(tail -f "$_infile") \
     > /dev/null 2>&1       \
-      simplescreenrecorder --start-hidden           \
-                           --settingsfile="$ssrcnf" \
-                           --statsfile="$ssrsts"
-    rm -f "${infile:?}"
+      simplescreenrecorder --start-hidden            \
+                           --settingsfile="$_ssrcnf" \
+                           --statsfile="$_ssrsts"
+    rm -f "${_infile:?}"
   } &
 }

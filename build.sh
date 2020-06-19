@@ -35,4 +35,5 @@ while IFS= read -r line ; do
   fi
 done < "$_dir/main.sh" > "$output"
 [[ -f "$output" ]] && chmod +x "$output"
+shellcheck "$output"
 

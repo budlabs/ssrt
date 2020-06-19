@@ -1,6 +1,6 @@
 #!/bin/bash
 
 msg() {
-  mkdir -p "${infile%/*}"
-  echo "$*" >> "$infile"
+  mkdir -p "${_infile%/*}"
+  echo "$*" >> "$_infile"
 }

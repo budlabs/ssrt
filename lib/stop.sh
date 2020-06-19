@@ -14,7 +14,7 @@ stop() {
     opf=$(getoutputpath)
 
     [[ -f $opf ]] || ERX could not find output file "$opf"
-    ifcmd "$previewcommand" || choice=Yes
+    ifcmd "$_previewcommand" || choice=Yes
 
     while [[ ${choice:=Maybe} = Maybe ]]; do
       choice=$(preview "$opf")

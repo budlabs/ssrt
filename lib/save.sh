@@ -6,7 +6,7 @@ save() {
 
   until ((validpath)); do
 
-    path=$(menu -p "Save as: " -f "${savedir/~/'~'}")
+    path=$(menu -p "Save as: " -f "${_savedir/~/'~'}")
     path=${path/'~'/~}
 
     [[ -z $path ]] && {
@@ -17,7 +17,10 @@ save() {
     [[ ${path} =~ ^/ ]] && validpath=1
   done
 
-  [[ -d $path ]] && path+=/$defaultname
+  [[ -d $path ]] && {
+    path+=/$_defaultname
+    [[ -n $_timeformat ]] && path+=$(date +"$_timeformat")
+  }
 
   [[ $path =~ .+[^/]+([.].+)$ ]] && path=${path%.*}
   mkdir -p "${path%/*}"

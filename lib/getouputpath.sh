@@ -4,9 +4,9 @@ getoutputpath() {
 
   # in config find directory
   # file=/home/bud/ssrop.mkv
-
   # in stats file
   # file_name         ssrop-2020-06-16_19.24.43.mkv
+  
   awk '
 
     /^file=/ { gsub(/^file=|[^/]+$/,"")    ; dir=$0 }
@@ -14,5 +14,5 @@ getoutputpath() {
 
     END { print dir fil }
 
-  ' "$ssrcnf" "$ssrsts"
+  ' "$_ssrcnf" "$_ssrsts"
 }

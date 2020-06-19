@@ -4,7 +4,7 @@ menu() {
 
   local m o prompt OPTARG OPTIND
   
-  for m in "${menus[@]}"; do
+  for m in "${_menus[@]}"; do
     ifcmd "$m" && break
     unset m
   done

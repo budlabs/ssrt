@@ -1,10 +1,8 @@
 #!/bin/bash
 
 getlaststate() {
-
-  [[ -f $infile ]] \
+  [[ -f $_infile ]] \
     || ERX could not send command, no infile
 
-  tail -n 1 "$infile"
-
+  tail -n 1 "$_infile"
 }

@@ -4,7 +4,7 @@ play-toggle() {
   local state m
   ERM play/pause
 
-  ((ssrpid)) || ERX ssr is not running
+  ((_ssrpid)) || ERX ssr is not running
   state=$(getlaststate)
 
   [[ $state = record-start ]] \
