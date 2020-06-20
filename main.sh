@@ -2,20 +2,13 @@
 
 main() {
 
-  declare -i _ssrpid _dunstid=1338
-  declare -r _confdir=${__o[config-dir]:-~/.ssr}
-  declare -r _conffile=${_confdir}/ssrt.conf
-  declare -r _ssrcnf="$_confdir"/settings.conf
-  declare -r _ssrsts="$_confdir"/stats
+  declare -ri _ssrpid _dunstid=1338
+  declare -r  _confdir=${__o[config-dir]:-$SSR_CONFIG_DIR}
+  declare -r  _ssrcnf="$_confdir"/settings.conf
+  declare -r  _ssrsts="$_confdir"/stats
+  declare -r  _infile=${__[input-file]:-$SSRT_INPUTFILE}
 
   _ssrpid=$(pidof simplescreenrecorder)
-
-  [[ -f "$_conffile" ]] || { createconf "$_confdir" ;}
-  parseconf "$_conffile"
-
-  [[ -z $_savedir ]] && _savedir=~ \
-    && ifcmd xdg-user-dir          \
-    && _savedir=$(xdg-user-dir VIDEOS)
 
   if ((__o[pause])); then
     play-toggle

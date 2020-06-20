@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-ssrt - version: 2020.06.20.16
+ssrt - version: 2020.06.20.25
 updated: 2020-06-20 by budRich
 EOB
 }
@@ -11,24 +11,19 @@ EOB
 
 # environment variables
 : "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${SSR_CONFIG_DIR:=$HOME/.ssr}"
+: "${SSRT_INPUT_FILE:=/tmp/ssrt/in}"
 
 
 main() {
 
-  declare -i _ssrpid _dunstid=1338
-  declare -r _confdir=${__o[config-dir]:-~/.ssr}
-  declare -r _conffile=${_confdir}/ssrt.conf
-  declare -r _ssrcnf="$_confdir"/settings.conf
-  declare -r _ssrsts="$_confdir"/stats
+  declare -ri _ssrpid _dunstid=1338
+  declare -r  _confdir=${__o[config-dir]:-$SSR_CONFIG_DIR}
+  declare -r  _ssrcnf="$_confdir"/settings.conf
+  declare -r  _ssrsts="$_confdir"/stats
+  declare -r  _infile=${__[input-file]:-$SSRT_INPUTFILE}
 
   _ssrpid=$(pidof simplescreenrecorder)
-
-  [[ -f "$_conffile" ]] || { createconf "$_confdir" ;}
-  parseconf "$_conffile"
-
-  [[ -z $_savedir ]] && _savedir=~ \
-    && ifcmd xdg-user-dir          \
-    && _savedir=$(xdg-user-dir VIDEOS)
 
   if ((__o[pause])); then
     play-toggle
@@ -48,7 +43,7 @@ ssrt - SHORT DESCRIPTION
 
 SYNOPSIS
 --------
-ssrt [--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR]
+ssrt [--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR] [--input-file|-i FILE]
 ssrt --help|-h
 ssrt --version|-v
 
@@ -62,6 +57,8 @@ OPTIONS
 --select|-s  
 
 --config-dir|-c DIR  
+
+--input-file|-i FILE  
 
 --help|-h  
 Show help and exit.
@@ -123,20 +120,6 @@ cat << 'EOCONF' > "$trgdir/events/stop"
 opf=$SSR_OUTPUTFILE
 notify-send "i stopped $opf"
 
-
-# [[ -f $opf ]] || ERX could not find output file "$opf"
-# ifcmd "$_previewcommand" || choice=Yes
-
-# while [[ ${choice:=Maybe} = Maybe ]]; do
-#   eval "$_previewcommand '$opf'" > /dev/null 2>&1
-#   choice=$(menu -p "Save file? " Yes No Maybe New)
-#   : "${choice:=No}"
-# done
-
-# [[ $choice = Yes ]] && save "$opf"
-
-# rm -f "$opf"
-# [[ $choice = New ]] && exec "$0"
 EOCONF
 
 chmod +x "$trgdir/events/stop"
@@ -158,46 +141,6 @@ echo i paused
 EOCONF
 
 chmod +x "$trgdir/events/pause"
-cat << 'EOCONF' > "$trgdir/ssrt.conf"
-# when a ssr command (f.i. record-start) 
-# is appended to infile while ssr is running
-# it will get executed
-infile = /tmp/ssrt/in
-
-# 'command' that will be used to preview recording
-# if command is not found, preview is skipped
-# and save action is asumed.
-previewcommand = mpv
-
-# when saving a recording, if only a tartget
-# directory is specified, use this default name.
-defaultname = testdef
-
-# if timeformat `date(1)` is specified and if only
-# a tartget directory is specified,  append
-# timestamp to saved file
-timeformat = %y%m%d%-H:%M:%S
-
-# default directory to save recording
-# if not set either XDG_USER_VIDEOS or HOME will
-# be used. Another location can be specied in menu
-# when a file is about to be saved.
-savedir =
-
-# comma separated list of menu commands to try
-# when a menu is needed
-menus = i3menu,dmenu,rofi
-
-# if set this command will get evaluated when a menu
-# is needed. 
-# %f will be replaced with filter string.
-# %p will be replaced with prompt string.
-# custommenu = rofi -dmenu -p '%p' -filter '%f'
-custommenu =
-
-# syntax:ssHash
-EOCONF
-
 }
 
 set -E
@@ -221,7 +164,7 @@ event() {
 
 getlaststate() {
   [[ -f $_infile ]] \
-    || ERX could not send command, no infile
+    || ERX could not get state, no input-file
 
   tail -n 1 "$_infile"
 }
@@ -284,40 +227,6 @@ msg() {
   echo "$*" >> "$_infile"
 }
 
-parseconf() {
-
-  local re sp gr
-  sp='[[:space:]]' gr='[[:graph:]]'
-  re="^${sp}*(${gr}+)${sp}*=${sp}*(.+)\$"
-
-  # default config values:
-  declare -g  _infile=/tmp/ssrt/in
-  declare -g  _previewcommand=mpv
-  declare -g  _defaultname=testdef
-  declare -g  _timeformat='%y%m%d%-H:%M:%S'
-  declare -g  _savedir=
-  declare -g  _custommenu=
-  declare -ga _menus=(i3menu dmenu rofi)
-
-  while IFS= read -r line ;do
-    [[ $line =~ $re ]] && {
-      key=${BASH_REMATCH[1]}
-      val=${BASH_REMATCH[2]}
-
-      case "$key" in
-        infile         ) _infile=$val         ;;
-        previewcommand ) _previewcommand=$val ;;
-        defaultname    ) _defaultname=$val    ;;
-        timeformat     ) _timeformat=$val     ;;
-        savedir        ) _savedir=$val        ;;
-        custommenu     ) _custommenu=$val        ;;
-        menus) mapfile -td, _menus <<< "$val" ;;
-        *              ) continue             ;;
-      esac
-    }
-  done < "$1"
-}
-
 play-toggle() {
   local state
 
@@ -338,24 +247,21 @@ play-toggle() {
 
 stop() {
 
-  local state opf choice
-
-  state=$(getlaststate)
-
-  if [[ $state = record-start ]]; then
+  if [[ $(getlaststate) = record-start ]]; then
     msg record-save
     event stop
     msg quit
   else
     play-toggle
   fi
+  
 }
 
 declare -A __o
 options="$(
   getopt --name "[ERROR]:ssrt" \
-    --options "pd:sc:hv" \
-    --longoptions "pause,delay:,select,config-dir:,help,version," \
+    --options "pd:sc:i:hv" \
+    --longoptions "pause,delay:,select,config-dir:,input-file:,help,version," \
     -- "$@" || exit 77
 )"
 
@@ -368,6 +274,7 @@ while true; do
     --delay      | -d ) __o[delay]="${2:-}" ; shift ;;
     --select     | -s ) __o[select]=1 ;; 
     --config-dir | -c ) __o[config-dir]="${2:-}" ; shift ;;
+    --input-file | -i ) __o[input-file]="${2:-}" ; shift ;;
     --help       | -h ) ___printhelp && exit ;;
     --version    | -v ) ___printversion && exit ;;
     -- ) shift ; break ;;

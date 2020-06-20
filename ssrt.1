@@ -9,7 +9,7 @@
 .RS
 
 .nf
-ssrt [\-\-pause|\-p] [\-\-delay|\-d SECONDS] [\-\-select|\-s] [\-\-config\-dir|\-c DIR]
+ssrt [\-\-pause|\-p] [\-\-delay|\-d SECONDS] [\-\-select|\-s] [\-\-config\-dir|\-c DIR] [\-\-input\-file|\-i FILE]
 ssrt \-\-help|\-h
 ssrt \-\-version|\-v
 
@@ -34,6 +34,9 @@ LONG DESCRIPTION
 \fB\fC\-\-config\-dir\fR|\fB\fC\-c\fR DIR
 
 .PP
+\fB\fC\-\-input\-file\fR|\fB\fC\-i\fR FILE
+
+.PP
 \fB\fC\-\-help\fR|\fB\fC\-h\fR
 .br
 Show help and exit.
@@ -50,9 +53,22 @@ Show version and exit.
 .PP
 defaults to: $HOME/.config
 
+.PP
+\fB\fCSSR\_CONFIG\_DIR\fR
+
+.PP
+defaults to: $HOME/.ssr
+
+.PP
+\fB\fCSSRT\_INPUT\_FILE\fR
+
+.PP
+defaults to: /tmp/ssrt/in
+
 .SH DEPENDENCIES
 .PP
-\fB\fCbash\fR \fB\fCgawk\fR \fB\fCsed\fR
+\fB\fCbash\fR \fB\fCgawk\fR \fB\fCsed\fR \fB\fCxrandr\fR \fB\fCslop\fR \fB\fClibnotify\fR
+\fB\fCdunstify\fR
 
 .PP
 budRich https://github.com/budlabs

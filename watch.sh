@@ -12,6 +12,7 @@ done < <(
               --recursive --monitor        \
               --exclude 'createconf[.]sh$' \
               "$_dir"/lib/*.sh             \
+              "$_dir"/conf/*               \
               "$_dir/main.sh"              \
               "$_dir/manifest.md"
 )
