@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-ssrt - version: 2020.06.20.13
+ssrt - version: 2020.06.20.16
 updated: 2020-06-20 by budRich
 EOB
 }
@@ -279,36 +279,6 @@ launch() {
   } &
 }
 
-menu() {
-
-  local m o prompt OPTARG OPTIND
-  
-  for m in "${_menus[@]}"; do
-    ifcmd "$m" && break
-    unset m
-  done
-
-  while getopts :p:f: o; do
-    [[ $o = p ]] && prompt=$OPTARG
-    [[ $o = f ]] && filter=$OPTARG
-  done ; shift $((OPTIND-1))
-
-  if [[ -n $_custommenu ]]; then
-    _custommenu=${_custommenu//%p/$prompt}
-    _custommenu=${_custommenu//%f/$filter}
-    m=CUSTOMMENU
-  fi
-
-
-  case "$m" in
-    CUSTOMMENU  ) eval "$_custommenu" ;;
-    dmenu  ) "$m" -p "$prompt" ;;
-    rofi   ) "$m" -dmenu -p "$prompt" -filter "$filter" ;;
-    i3menu ) "$m" -p "$prompt" -f "$filter" ;;
-    *      ) ERX cannot find menu command ;;
-  esac < <(printf "%s${1:+\n}" "${@}")
-}
-
 msg() {
   mkdir -p "${_infile%/*}"
   echo "$*" >> "$_infile"
@@ -366,45 +336,6 @@ play-toggle() {
 
 }
 
-save() {
-  local f=$1
-  declare -i validpath
-
-  until ((validpath)); do
-
-    path=$(menu -p "Save as: " -f "${_savedir/~/'~'}")
-    path=${path/'~'/~}
-
-    [[ -z $path ]] && {
-      confirm=$(menu -p "Delete $f ? " No Yes)
-      [[ $confirm = Yes ]] && return
-    }
-
-    [[ ${path} =~ ^/ ]] && validpath=1
-  done
-
-  [[ -d $path ]] && {
-    path+=/$_defaultname
-    [[ -n $_timeformat ]] && path+=$(date +"$_timeformat")
-  }
-
-  # remove file extension entered by user
-  [[ $path =~ .+[^/]+([.].+)$ ]] && path=${path%.*}
-
-  # append same extension as the recorded file
-  path+=".${f##*.}"
-
-  mkdir -p "${path%/*}"
-
-  # if target file already exist create a unique
-  # filename file1.file2...
-  while [[ -f $path ]]; do
-    path="${path%.*}$((++i)).${f##*.}"
-  done
-
-  mv "$f" "$path"."${f##*.}"
-}
-
 stop() {
 
   local state opf choice
@@ -414,23 +345,6 @@ stop() {
   if [[ $state = record-start ]]; then
     msg record-save
     event stop
-
-    opf=$(getoutputpath)
-
-    [[ -f $opf ]] || ERX could not find output file "$opf"
-    ifcmd "$_previewcommand" || choice=Yes
-
-    while [[ ${choice:=Maybe} = Maybe ]]; do
-      eval "$_previewcommand '$opf'" > /dev/null 2>&1
-      choice=$(menu -p "Save file? " Yes No Maybe New)
-      : "${choice:=No}"
-    done
-
-    [[ $choice = Yes ]] && save "$opf"
-    
-    rm -f "$opf"
-    [[ $choice = New ]] && exec "$0" 
-
     msg quit
   else
     play-toggle
