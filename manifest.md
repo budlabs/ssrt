@@ -1,8 +1,8 @@
 ---
 description: >
   SHORT DESCRIPTION
-updated:       2020-06-19
-version:       2020.06.19.42
+updated:       2020-06-20
+version:       2020.06.20.0
 author:        budRich
 repo:          https://github.com/budlabs
 created:       2020-06-19
