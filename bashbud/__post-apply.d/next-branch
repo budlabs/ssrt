@@ -2,13 +2,13 @@ projectdir="$1"
 
 if [[ -d "$projectdir/next" ]]; then
 
-  cp -f -t "$projectdir/next"                 \
-           "$projectdir/README.md"            \
-           "$projectdir/LICENSE"              \
-           "$projectdir/Makefile"             \
-           "$projectdir/${projectdir##*/}.1"  \
+  cp -frt "$projectdir/next"                 \
+          "$projectdir/README.md"            \
+          "$projectdir/LICENSE"              \
+          "$projectdir/Makefile"             \
+          "$projectdir/${projectdir##*/}.1"  \
+          "$projectdir/event-examples"       \
 
-
-  cp -f "$projectdir/program.sh"              \
-        "$projectdir/next/${projectdir##*/}"
+  cp -f   "$projectdir/program.sh"           \
+          "$projectdir/next/${projectdir##*/}"
 fi
