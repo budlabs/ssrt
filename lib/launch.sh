@@ -5,7 +5,6 @@ launch() {
   declare -i del=${__o[delay]}
   echo record-start > "$_infile"
 
-
   area "${__o[select]:+fixed}"
 
   {
@@ -24,8 +23,10 @@ launch() {
       fi
     }
 
+    event start
+
     < <(tail -f "$_infile") \
-    > /dev/null 2>&1       \
+    > /dev/null 2>&1        \
       simplescreenrecorder --start-hidden            \
                            --settingsfile="$_ssrcnf" \
                            --statsfile="$_ssrsts"
