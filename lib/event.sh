@@ -5,10 +5,10 @@ event() {
   local trg="$_confdir/events/$1"
 
   opf=$(getoutputpath)
-  echo "$opf"
-  [[ -x $trg ]] && {
-    "$trg" &
-    # SSR_OUTPUTFILE=$opf "$trg" &
-  }
 
+  [[ -x $trg ]] && (
+    SSR_OUTPUTFILE="${opf:-}"          \
+    PATH="$_confdir/events/lib:$PATH"  \
+    exec "$trg"
+  )
 }

@@ -5,10 +5,55 @@ local trgdir="$1"
 declare -a aconfdirs
 
 aconfdirs=(
+"$trgdir/events"
 )
 
 mkdir -p "$1" "${aconfdirs[@]}"
 
+cat << 'EOCONF' > "$trgdir/events/stop"
+#!/bin/bash
+
+opf=$SSR_OUTPUTFILE
+notify-send "i stopped $opf"
+
+
+# [[ -f $opf ]] || ERX could not find output file "$opf"
+# ifcmd "$_previewcommand" || choice=Yes
+
+# while [[ ${choice:=Maybe} = Maybe ]]; do
+#   eval "$_previewcommand '$opf'" > /dev/null 2>&1
+#   choice=$(menu -p "Save file? " Yes No Maybe New)
+#   : "${choice:=No}"
+# done
+
+# [[ $choice = Yes ]] && save "$opf"
+
+# rm -f "$opf"
+# [[ $choice = New ]] && exec "$0"
+EOCONF
+
+chmod +x "$trgdir/events/stop"
+cat << 'EOCONF' > "$trgdir/events/resume"
+#!/bin/bash
+
+echo i resumed
+EOCONF
+
+chmod +x "$trgdir/events/resume"
+cat << 'EOCONF' > "$trgdir/events/start"
+#!/bin/bash
+
+notify-send "im starting"
+EOCONF
+
+chmod +x "$trgdir/events/start"
+cat << 'EOCONF' > "$trgdir/events/pause"
+#!/bin/bash
+
+echo i paused
+EOCONF
+
+chmod +x "$trgdir/events/pause"
 cat << 'EOCONF' > "$trgdir/ssrt.conf"
 # when a ssr command (f.i. record-start) 
 # is appended to infile while ssr is running

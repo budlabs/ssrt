@@ -4,12 +4,11 @@ stop() {
 
   local state opf choice
 
-  ERM stop
-
   state=$(getlaststate)
 
   if [[ $state = record-start ]]; then
     msg record-save
+    event stop
 
     opf=$(getoutputpath)
 

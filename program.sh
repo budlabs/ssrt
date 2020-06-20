@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-ssrt - version: 2020.06.20.0
+ssrt - version: 2020.06.20.13
 updated: 2020-06-20 by budRich
 EOB
 }
@@ -113,10 +113,51 @@ local trgdir="$1"
 declare -a aconfdirs
 
 aconfdirs=(
+"$trgdir/events"
 )
 
 mkdir -p "$1" "${aconfdirs[@]}"
 
+cat << 'EOCONF' > "$trgdir/events/stop"
+
+opf=$SSR_OUTPUTFILE
+notify-send "i stopped $opf"
+
+
+# [[ -f $opf ]] || ERX could not find output file "$opf"
+# ifcmd "$_previewcommand" || choice=Yes
+
+# while [[ ${choice:=Maybe} = Maybe ]]; do
+#   eval "$_previewcommand '$opf'" > /dev/null 2>&1
+#   choice=$(menu -p "Save file? " Yes No Maybe New)
+#   : "${choice:=No}"
+# done
+
+# [[ $choice = Yes ]] && save "$opf"
+
+# rm -f "$opf"
+# [[ $choice = New ]] && exec "$0"
+EOCONF
+
+chmod +x "$trgdir/events/stop"
+cat << 'EOCONF' > "$trgdir/events/resume"
+
+echo i resumed
+EOCONF
+
+chmod +x "$trgdir/events/resume"
+cat << 'EOCONF' > "$trgdir/events/start"
+
+notify-send "im starting"
+EOCONF
+
+chmod +x "$trgdir/events/start"
+cat << 'EOCONF' > "$trgdir/events/pause"
+
+echo i paused
+EOCONF
+
+chmod +x "$trgdir/events/pause"
 cat << 'EOCONF' > "$trgdir/ssrt.conf"
 # when a ssr command (f.i. record-start) 
 # is appended to infile while ssr is running
@@ -165,6 +206,19 @@ trap '[ "$?" -ne 77 ] || exit 77' ERR
 ERX() { >&2 echo "$*" && exit 77 ;}
 ERM() { >&2 echo "$*" ;}
 
+event() {
+  local opf
+  local trg="$_confdir/events/$1"
+
+  opf=$(getoutputpath)
+
+  [[ -x $trg ]] && (
+    SSR_OUTPUTFILE="${opf:-}"          \
+    PATH="$_confdir/events/lib:$PATH"  \
+    exec "$trg"
+  )
+}
+
 getlaststate() {
   [[ -f $_infile ]] \
     || ERX could not send command, no infile
@@ -179,7 +233,7 @@ getoutputpath() {
   # in stats file (_ssrsts) get filename
   # file_name  ssrop-2020-06-16_19.24.43.mkv
   
-  awk '
+  [[ -f $_ssrsts ]] && awk '
 
     /^file=/ { gsub(/^file=|[^/]+$/,"")    ; dir=$0 }
     /^file_name/ { gsub(/^file_name\s+/,""); fil=$0 }
@@ -195,7 +249,6 @@ launch() {
 
   declare -i del=${__o[delay]}
   echo record-start > "$_infile"
-
 
   area "${__o[select]:+fixed}"
 
@@ -215,8 +268,10 @@ launch() {
       fi
     }
 
+    event start
+
     < <(tail -f "$_infile") \
-    > /dev/null 2>&1       \
+    > /dev/null 2>&1        \
       simplescreenrecorder --start-hidden            \
                            --settingsfile="$_ssrcnf" \
                            --statsfile="$_ssrsts"
@@ -294,17 +349,20 @@ parseconf() {
 }
 
 play-toggle() {
-  local state m
+  local state
 
   # if ssr is not running execute the script again
   # without -p option to toggle launch
   ((_ssrpid)) || exec "$0"
   state=$(getlaststate)
 
-  [[ $state = record-start ]] \
-    && m=record-pause || m=record-start
-
-  msg "$m"
+  if [[ $state = record-start ]]; then
+    msg record-pause
+    event pause
+  else
+    msg record-start
+    event resume
+  fi
 
 }
 
@@ -351,12 +409,11 @@ stop() {
 
   local state opf choice
 
-  ERM stop
-
   state=$(getlaststate)
 
   if [[ $state = record-start ]]; then
     msg record-save
+    event stop
 
     opf=$(getoutputpath)
 
