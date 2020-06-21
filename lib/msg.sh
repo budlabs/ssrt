@@ -1,6 +1,3 @@
 #!/bin/bash
 
-msg() {
-  mkdir -p "${_infile%/*}"
-  echo "$*" >> "$_infile"
-}
+msg() { [[ -f $_infile ]] && echo "$*" >> "$_infile" ;}

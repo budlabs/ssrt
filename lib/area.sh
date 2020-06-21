@@ -24,13 +24,13 @@ area() {
   t=$(mktemp)
 
   awk -F= '
-    $1 == "video_area" {sub($2,mode)}
+    $1 == "video_area" {sub($2,m)}
     $1 == "video_h"    {sub($2,h)}
     $1 == "video_w"    {sub($2,w)}
     $1 == "video_x"    {sub($2,x)}
     $1 == "video_y"    {sub($2,y)}
     {print}
-  ' w="$w" h="$h" x="$x" y="$y" mode="$mode" "$_ssrcnf" > "$t"
+  ' w="$w" h="$h" x="$x" y="$y" m="$mode" "$_ssrcnf" > "$t"
 
   mv -f "$t" "$_ssrcnf"
 }
