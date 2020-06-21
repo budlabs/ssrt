@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# this event is triggered before recording starts
+# if --delay options is used. If there exist no
+# executable file: events/delay
+# a silent sleep will be used
+
+# the argument passed to --delay is available as
+# $1 in this file.
+declare -i del=$1 
+declare -i _dunstid=1338
+
+if ifcmd dunstify ; then
+  while ((del--)); do
+    dunstify -r "$_dunstid" "recording starts in $((del+1))"
+    sleep 1
+  done
+  
+  dunstify --close "$_dunstid"
+elif ifcmd notify-send ; then
+  notify-send --expire-time "$del" \
+    "recording delayed $del seconds."
+  sleep "${del}"
+else
+  sleep "${del}"
+fi

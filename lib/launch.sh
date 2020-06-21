@@ -3,23 +3,19 @@
 launch() {
 
   declare -i del=${__o[delay]}
+  local delevent="$_confdir/events/delay"
+  mkdir -p "${_infile%/*}"
   echo record-start > "$_infile"
 
   area "${__o[select]:+fixed}"
 
   {
+
     ((del)) && {
-      if ifcmd dunstify ; then
-        while ((del--)); do
-          dunstify -r "$_dunstid" "recording starts in $((del+1))"
-          sleep 1
-        done
-        
-        dunstify --close "$_dunstid"
+      if [[ -x $delevent ]]; then
+        PATH="${delevent%/*}/lib:$PATH" "$delevent" "$del"
       else
-        notify-send --expire-time "$del" \
-          "recording delayed $del seconds."
-        sleep "${del}"
+        sleep "$del"
       fi
     }
 
