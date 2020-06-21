@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-ssrt - version: 2020.06.21.17
+ssrt - version: 2020.06.21.22
 updated: 2020-06-21 by budRich
 EOB
 }
@@ -117,10 +117,17 @@ declare -a aconfdirs
 
 aconfdirs=(
 "$trgdir/events"
+"$trgdir/events/lib"
 )
 
 mkdir -p "$1" "${aconfdirs[@]}"
 
+cat << 'EOCONF' > "$trgdir/events/lib/ifcmd"
+
+command -v "$1" > /dev/null
+EOCONF
+
+chmod +x "$trgdir/events/lib/ifcmd"
 cat << 'EOCONF' > "$trgdir/events/delay"
 
 # this event is triggered before recording starts
@@ -132,6 +139,9 @@ cat << 'EOCONF' > "$trgdir/events/delay"
 # $1 in this file.
 declare -i del=$1 
 declare -i _dunstid=1338
+
+# ifcmd is a script in the events/lib directory
+# that direcory will be in all events PATH. 
 
 if ifcmd dunstify ; then
   while ((del--)); do

@@ -10,6 +10,9 @@
 declare -i del=$1 
 declare -i _dunstid=1338
 
+# ifcmd is a script in the events/lib directory
+# that direcory will be in all events PATH. 
+
 if ifcmd dunstify ; then
   while ((del--)); do
     dunstify -r "$_dunstid" "recording starts in $((del+1))"
