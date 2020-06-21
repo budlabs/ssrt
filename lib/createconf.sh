@@ -47,8 +47,10 @@ chmod +x "$trgdir/events/delay"
 cat << 'EOCONF' > "$trgdir/events/stop"
 #!/bin/bash
 
-opf=$SSR_OUTPUTFILE
-notify-send "i stopped $opf"
+# this event gets triggered when recording stops.
+
+# the event varialbe $SSR_OUTPUTFILE contains the
+# full path to the current recording.
 
 EOCONF
 
@@ -56,21 +58,35 @@ chmod +x "$trgdir/events/stop"
 cat << 'EOCONF' > "$trgdir/events/resume"
 #!/bin/bash
 
-echo i resumed
+# this event gets triggered when ssrt is executed
+# when a paused recording is resumed.
+
+# the event varialbe $SSR_OUTPUTFILE contains the
+# full path to the current recording.
+
 EOCONF
 
 chmod +x "$trgdir/events/resume"
 cat << 'EOCONF' > "$trgdir/events/start"
 #!/bin/bash
 
-notify-send "im starting"
+# this event gets triggered when ssrt a new recording
+# starts.
+# the event is actually triggered just before the recording
+# starts, hence the event varialbe $SSR_OUTPUTFILE 
+# is empty here.
 EOCONF
 
 chmod +x "$trgdir/events/start"
 cat << 'EOCONF' > "$trgdir/events/pause"
 #!/bin/bash
 
-echo i paused
+# this event gets triggered when ssrt is executed
+# with the --pause option when there is an ongoing
+# recording i.e. when a recording is paused.
+
+# the event varialbe $SSR_OUTPUTFILE contains the
+# full path to the current recording.
 EOCONF
 
 chmod +x "$trgdir/events/pause"

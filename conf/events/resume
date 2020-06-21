@@ -1,3 +1,8 @@
 #!/bin/bash
 
-echo i resumed
+# this event gets triggered when ssrt is executed
+# when a paused recording is resumed.
+
+# the event varialbe $SSR_OUTPUTFILE contains the
+# full path to the current recording.
+

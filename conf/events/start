@@ -1,3 +1,7 @@
 #!/bin/bash
 
-notify-send "im starting"
+# this event gets triggered when ssrt a new recording
+# starts.
+# the event is actually triggered just before the recording
+# starts, hence the event varialbe $SSR_OUTPUTFILE 
+# is empty here.
