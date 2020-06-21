@@ -1,0 +1,42 @@
+#!/bin/bash
+
+pidfile=/tmp/rectimerpid
+
+while getopts :sp o ; do
+  [[ -f $pidfile ]] && {
+    [[ $o = p ]] && kill -s SIGUSR1 "$(< "$pidfile")"
+    [[ $o = s ]] && kill -s SIGUSR2 "$(< "$pidfile")"
+    exit 
+  }
+done
+
+update() {
+  for ((;!pause;++start)); do
+    stamp="$(date -d @$((-3600+start)) +'%H:%M:%S')"
+    polify --module timer "$stamp"
+    sleep 1
+  done
+}
+
+
+[[ -f $pidfile ]] || {
+
+  declare -i pause stop start
+  stamp=""
+
+  echo $BASHPID > "$pidfile"
+
+  trap 'pause=$((!pause))' SIGUSR1
+  trap 'pause=1 stop=1'    SIGUSR2
+
+  update
+
+  until ((stop)); do
+    polify --module timer "$stamp" --foreground '#FF0000'
+    ((pause)) || update
+    sleep 1
+  done
+
+  polify --module timer "$stamp" --clear
+  rm "$pidfile"
+} &

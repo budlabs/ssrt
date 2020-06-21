@@ -7,7 +7,7 @@ ERX() { >&2 echo "$*" && exit 77 ;}
 
 [[ -f $opf ]] || ERX could not find output file "$opf"
 ifcmd "$_previewcommand" || choice=Yes
-
+polybar-timer -s
 while [[ ${choice:=Maybe} = Maybe ]]; do
   eval "$_previewcommand '$opf'" > /dev/null 2>&1
   choice=$(menu -p "Save file? " Yes No Maybe New)

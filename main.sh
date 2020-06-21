@@ -2,13 +2,15 @@
 
 main() {
 
-  declare -ri _ssrpid _dunstid=1338
-  declare -r  _confdir=${__o[config-dir]:-$SSR_CONFIG_DIR}
-  declare -r  _ssrcnf="$_confdir"/settings.conf
-  declare -r  _ssrsts="$_confdir"/stats
-  declare -r  _infile=${__[input-file]:-$SSRT_INPUTFILE}
+  declare -i _ssrpid _dunstid=1338
+  declare -r _confdir=${__o[config-dir]:-$SSR_CONFIG_DIR}
+  declare -r _ssrcnf="$_confdir"/settings.conf
+  declare -r _ssrsts="$_confdir"/stats
+  declare -r _infile=${__[input-file]:-$SSRT_INPUTFILE}
 
   _ssrpid=$(pidof simplescreenrecorder)
+
+  [[ -d "$_confdir/events" ]] || createconf "$_confdir"
 
   if ((__o[pause])); then
     play-toggle
