@@ -119,7 +119,12 @@ Show version and exit.
 
 ## updates
 
+### 2020.06.22.25
+changed order that stop event happens, event is now
+executed after the message 'quit' is  sent.
+
 ### 2020.06.22.1
+
 initial release
 
 
