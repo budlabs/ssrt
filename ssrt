@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-ssrt - version: 2020.06.22.4
+ssrt - version: 2020.06.22.13
 updated: 2020-06-22 by budRich
 EOB
 }
@@ -145,12 +145,14 @@ aconfdirs=(
 mkdir -p "$1" "${aconfdirs[@]}"
 
 cat << 'EOCONF' > "$trgdir/events/lib/ifcmd"
+#!/usr/bin/env bash
 
 command -v "$1" > /dev/null
 EOCONF
 
 chmod +x "$trgdir/events/lib/ifcmd"
 cat << 'EOCONF' > "$trgdir/events/delay"
+#!/usr/bin/env bash
 
 # this event is triggered before recording starts
 # if --delay options is used. If there exist no
@@ -183,6 +185,7 @@ EOCONF
 
 chmod +x "$trgdir/events/delay"
 cat << 'EOCONF' > "$trgdir/events/stop"
+#!/usr/bin/env bash
 
 # this event gets triggered when recording stops.
 
@@ -193,6 +196,7 @@ EOCONF
 
 chmod +x "$trgdir/events/stop"
 cat << 'EOCONF' > "$trgdir/events/resume"
+#!/usr/bin/env bash
 
 # this event gets triggered when ssrt is executed
 # when a paused recording is resumed.
@@ -204,6 +208,7 @@ EOCONF
 
 chmod +x "$trgdir/events/resume"
 cat << 'EOCONF' > "$trgdir/events/start"
+#!/usr/bin/env bash
 
 # this event gets triggered when ssrt a new recording
 # starts.
@@ -214,6 +219,7 @@ EOCONF
 
 chmod +x "$trgdir/events/start"
 cat << 'EOCONF' > "$trgdir/events/pause"
+#!/usr/bin/env bash
 
 # this event gets triggered when ssrt is executed
 # with the --pause option when there is an ongoing

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-_custommenu='i3menu -p '%p' -f '%f' --layout B'
+ERX() { >&2 echo "$*" && exit 77 ;}
+# _custommenu='i3menu -p '%p' -f '%f' --layout B'
+_menus=(i3menu,rofi,dmenu)
 
 for m in "${_menus[@]}"; do
   ifcmd "$m" && break
