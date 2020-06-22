@@ -31,10 +31,10 @@ done
 }
 
 # remove file extension entered by user
-[[ $path =~ .+[^/]+([.].+)$ ]] && path=${path%.*}
+[[ $path =~ .+[^/.]+[.][a-zA-Z]+$ ]] && path=${path%.*}
 
 # append same extension as the recorded file
-path+=".${f##*.}"
+[[ $f =~ .*[.][a-zA-Z]+$ ]] && path+=".${f##*.}"
 
 mkdir -p "${path%/*}"
 
@@ -44,4 +44,4 @@ while [[ -f $path ]]; do
   path="${path%.*}$((++i)).${f##*.}"
 done
 
-mv "$f" "$path"."${f##*.}"
+mv "$f" "$path"

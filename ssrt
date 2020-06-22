@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-ssrt - version: 2020.06.22.22
+ssrt - version: 2020.06.22.25
 updated: 2020-06-22 by budRich
 EOB
 }
@@ -329,8 +329,11 @@ stop() {
 
   if [[ $(getlaststate) = record-start ]]; then
     msg record-save
+    # delay quit to make sure event can get
+    # fullpath from statsfile, which gets
+    # deleted when recording stops
+    { sleep .2 ; msg quit ;} &
     event stop
-    msg quit
   else
     play-toggle
   fi
