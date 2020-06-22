@@ -3,7 +3,7 @@ target:   init.sh
 markdown: false
 wrap:     50
 ...
-#!/usr/bin/env bash
+#!/bin/bash
 
 %%cat ___version%%
 %%cat ___envs%%

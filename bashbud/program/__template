@@ -9,7 +9,7 @@ wrap:     50
 %%cat ___envs%%
 %%cat -v '\(^#!/\)\|\(\s#bashbud$\)' main.sh%%
 %%cat ___help%%
-%%cat -v '\(^#!/\)' lib/*%%
+%%cat -v '\(^#!/bin/bash\)' lib/*%%
 
 %%cat ___getopt%%
 main "${@:-}"

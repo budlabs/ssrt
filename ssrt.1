@@ -1,8 +1,8 @@
 .nh
-.TH SSRT 1 2020\-06\-21 Linux "User Manuals"
+.TH SSRT 1 2020\-06\-22 Linux "User Manuals"
 .SH NAME
 .PP
-\fB\fCssrt\fR \- SHORT DESCRIPTION
+\fB\fCssrt\fR \- simplescreenreocrder \- now even simpler
 
 .SH SYNOPSIS
 .PP
@@ -18,23 +18,116 @@ ssrt \-\-version|\-v
 
 .SH DESCRIPTION
 .PP
-LONG DESCRIPTION
+In my global keybinding configuration (\fBi3wm\fP)
+i have the following:
+
+.PP
+.RS
+
+.nf
+bindsym Mod4+Print exec \-\-no\-startup\-id ssrt
+bindsym Mod1+Print exec \-\-no\-startup\-id ssrt \-\-pause
+
+.fi
+.RE
+
+.PP
+So by just pressing
+Super+PrScrn i can start and
+stop a screenrecording. The second keybinding uses
+Alt as the modifier and toggle
+play/pause (\fIit will also start a recording if
+there is none. And the first keybinding will
+resume a paused recording\fP). \fBssrt\fP also
+executes commands on different events, namely:
+.br
+\- delay
+
+.RS
+.IP \(bu 2
+start
+.IP \(bu 2
+stop
+.IP \(bu 2
+pause
+.IP \(bu 2
+resume
+
+.RE
+
+.PP
+With this functionality one could do all kinds of
+actions depending on the events, some examples:
+.br
+\- unmute the microphone before recording starts
+
+.RS
+.IP \(bu 2
+preview the recording in a videoplayer when recording stops
+.IP \(bu 2
+convert recorded media
+.IP \(bu 2
+display notifications on pause and delay
+
+.RE
+
+.PP
+I added it as an external "plugin" like system
+like this because the needs, options and
+applications different users might want to use are
+probably more then the number of users.
+
+.PP
+It looks for events in \fBSSR\_CONFIG\_DIR\fP/events
+, where executable files with the same name as the
+event can be placed. When \fBssrt\fP is launched for
+the first time a sample \fB\fCevents\fR directory will be
+created but the are "empty". See
+[./event\-examples] to see a complete setup.
 
 .SH OPTIONS
 .PP
 \fB\fC\-\-pause\fR|\fB\fC\-p\fR
+.br
+Toggle play/pause of an ongoing recording or
+start a new recording if there is none.
 
 .PP
 \fB\fC\-\-delay\fR|\fB\fC\-d\fR SECONDS
+.br
+Adds a delay in SECONDS (sleep) before starting a
+new recording. Has no effect when stopping a
+recording or toggling play/pause. This will also
+trigger the \fBdelay event\fP and pass SECONDS as
+the first argument.
 
 .PP
 \fB\fC\-\-select\fR|\fB\fC\-s\fR
+.br
+Execute \fB\fCslop(1)\fR before starting a recording for
+selection of area to record. Without this option
+the full active monitor will be recorded.
 
 .PP
 \fB\fC\-\-config\-dir\fR|\fB\fC\-c\fR DIR
+.br
+Override the environment variable
+\fBSSR\_CONFIG\_DIR\fP\&. Defaults to \fB\fC\~/.ssr\fR . This
+will be the directory where the statsfile,
+configfile and \fBevents directory\fP will be stored
+and created.
 
 .PP
 \fB\fC\-\-input\-file\fR|\fB\fC\-i\fR FILE
+.br
+Override the environment variable
+\fBSSRT\_INPUT\_FILE\fP\&. Defaults to \fB\fC/tmp/ssrt/in\fR .
+Commands can be appended to this file while the
+recording is running.
+.br
+\fB\fCecho record\-pause > /tmp/ssrt/in\fR . See
+simplescreenrecorder man page or \fB\fC\-\-help\fR for list
+of available commands.
 
 .PP
 \fB\fC\-\-help\fR|\fB\fC\-h\fR
@@ -47,12 +140,6 @@ Show help and exit.
 Show version and exit.
 
 .SH ENVIRONMENT
-.PP
-\fB\fCXDG\_CONFIG\_HOME\fR
-
-.PP
-defaults to: $HOME/.config
-
 .PP
 \fB\fCSSR\_CONFIG\_DIR\fR
 
@@ -67,13 +154,13 @@ defaults to: /tmp/ssrt/in
 
 .SH DEPENDENCIES
 .PP
-\fB\fCbash\fR \fB\fCgawk\fR \fB\fCsed\fR \fB\fCxrandr\fR \fB\fCslop\fR \fB\fClibnotify\fR
-\fB\fCdunstify\fR
+\fB\fCsimplescreenrecorder\fR \fB\fCbash\fR \fB\fCgawk\fR \fB\fCxrandr\fR
+\fB\fCslop\fR
 
 .PP
-budRich https://github.com/budlabs
-\[la]https://github.com/budlabs\[ra]
+budRich https://github.com/budlabs/ssrt
+\[la]https://github.com/budlabs/ssrt\[ra]
 
 .SH SEE ALSO
 .PP
-bash(1), awk(1), sed(1),
+bash(1), awk(1), simplescreenrecorder(1), xrandr(1), slop(1),

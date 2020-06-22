@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # this event is triggered before recording starts
 # if --delay options is used. If there exist no
