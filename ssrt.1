@@ -18,72 +18,12 @@ ssrt \-\-version|\-v
 
 .SH DESCRIPTION
 .PP
-In my global keybinding configuration (\fBi3wm\fP)
-i have the following:
-
-.PP
-.RS
-
-.nf
-bindsym Mod4+Print exec \-\-no\-startup\-id ssrt
-bindsym Mod1+Print exec \-\-no\-startup\-id ssrt \-\-pause
-
-.fi
-.RE
-
-.PP
-So by just pressing
-Super+PrScrn i can start and
-stop a screenrecording. The second keybinding uses
-Alt as the modifier and toggle
-play/pause (\fIit will also start a recording if
-there is none. And the first keybinding will
-resume a paused recording\fP). \fBssrt\fP also
-executes commands on different events, namely:
-.br
-\- delay
-
-.RS
-.IP \(bu 2
-start
-.IP \(bu 2
-stop
-.IP \(bu 2
-pause
-.IP \(bu 2
-resume
-
-.RE
-
-.PP
-With this functionality one could do all kinds of
-actions depending on the events, some examples:
-.br
-\- unmute the microphone before recording starts
-
-.RS
-.IP \(bu 2
-preview the recording in a videoplayer when recording stops
-.IP \(bu 2
-convert recorded media
-.IP \(bu 2
-display notifications on pause and delay
-
-.RE
-
-.PP
-I added it as an external "plugin" like system
-like this because the needs, options and
-applications different users might want to use are
-probably more then the number of users.
-
-.PP
-It looks for events in \fBSSR\_CONFIG\_DIR\fP/events
-, where executable files with the same name as the
-event can be placed. When \fBssrt\fP is launched for
-the first time a sample \fB\fCevents\fR directory will be
-created but the are "empty". See
-[./event\-examples] to see a complete setup.
+\fIevent scripts\fP are stored in
+\fBSSR\_CONFIG\_DIR\fP/events , as executable files
+with the same name as the event can be placed.
+When \fBssrt\fP is launched for the first time a
+sample \fB\fCevents\fR directory will be created but the
+scripts are \fI"empty"\fP\&.
 
 .SH OPTIONS
 .PP

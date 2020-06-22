@@ -1,11 +1,47 @@
 # ssrt - simplescreenreocrder - now even simpler 
 
 This script makes it easy to manage screenrecordings with
-[simplescreenrecorder] without using the GUI. See the live
-action raw uncut demonstration video on **youtube**:
-<https://----->
+[simplescreenrecorder] without using the GUI.
+
+In my global keybinding configuration (**i3wm**) i have the
+following:  
+```
+bindsym Mod4+Print exec --no-startup-id ssrt
+bindsym Control+Print exec --no-startup-id ssrt --pause
+```
+
+
+So by just pressing
+<kbd>Super</kbd>+<kbd>Print-Screen</kbd> i can start and
+stop a screenrecording. The second keybinding uses
+<kbd>Ctrl</kbd> as the modifier and toggle play/pause (*it
+will also start a recording if there is none. And the first
+keybinding will resume a paused recording*).  
+
+**ssrt** also trigger *event scripts* on certain events
+(start/stop/pause/resume/delay). Any executable file can be
+used as an eventscript, in which the full path to the
+current recording will be available in the environment
+variable: **SSR_OUTPUTFILE**.
+
+With this functionality one could do all kinds of stuff,
+some examples:  
+
+- unmute the microphone before recording starts
+
+- preview the recording in a videoplayer when recording stops
+
+- convert recorded media
+
+- display notifications on pause and delay
+
+
+See the live action raw uncut demonstration video on
+**youtube**: <https://----->
 
 [simplescreenrecorder]: https://www.maartenbaert.be/simplescreenrecorder/
+
+
 
 ## installation
 
@@ -31,48 +67,11 @@ updated: 2020-06-22 by budRich
 usage
 -----
 
-In my global keybinding configuration (**i3wm**) i have the
-following:  
-```
-bindsym Mod4+Print exec --no-startup-id ssrt
-bindsym Mod1+Print exec --no-startup-id ssrt --pause
-```
-
-
-So by just pressing <kbd>Super</kbd>+<kbd>PrScrn</kbd> i
-can start and stop a screenrecording. The second keybinding
-uses <kbd>Alt</kbd> as the modifier and toggle play/pause
-(*it will also start a recording if there is none. And the
-first keybinding will resume a paused recording*). **ssrt**
-also executes commands on different events, namely:  
-- delay
-
-- start
-
-- stop
-
-- pause
-
-- resume
-
-
-With this functionality one could do all kinds of actions
-depending on the events, some examples:  
-- unmute the microphone before recording starts
-
-- preview the recording in a videoplayer when recording stops
-
-- convert recorded media
-
-- display notifications on pause and delay
-
-
-I added it as an external "plugin" like system like this
-because the needs, options and applications different users
-might want to use are probably more then the number of
-users.
-
-It looks for events in **SSR_CONFIG_DIR**/events , where executable files with the same name as the event can be placed. When **ssrt** is launched for the first time a sample `events` directory will be created but the are "empty". See [./event-examples] to see a complete setup. 
+*event scripts* are stored in **SSR_CONFIG_DIR**/events ,
+as executable files with the same name as the event can be
+placed. When **ssrt** is launched for the first time a
+sample `events` directory will be created but the scripts
+are *"empty"*.
 
 
 options
@@ -117,6 +116,12 @@ Show help and exit.
 
 `--version`|`-v`  
 Show version and exit.
+
+## updates
+
+### 2020.06.22.1
+initial release
+
 
 ## license
 
