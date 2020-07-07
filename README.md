@@ -78,7 +78,7 @@ options
 -------
 
 ```text
-ssrt [--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR] [--input-file|-i FILE]
+ssrt [--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR] [--input-file|-i FILE] [--mute|-m] [--container|-n CONTAINER] [--codec|-e CODEC]  
 ssrt --help|-h
 ssrt --version|-v
 ```
@@ -109,7 +109,21 @@ stored and created.
 Override the environment variable **SSRT_INPUT_FILE**.
 Defaults to `/tmp/ssrt/in` . Commands can be appended to
 this file while the recording is running.  
-`echo record-pause > /tmp/ssrt/in` . See simplescreenrecorder man page or `--help` for list of available commands.
+`echo record-pause > /tmp/ssrt/in` . See
+simplescreenrecorder man page or `--help` for list of
+available commands.
+
+`--mute`|`-m`  
+set the option **audio_enabled** to false, and no sound
+will be recorded.
+
+`--container`|`-n` CONTAINER  
+set the option **container** to CONTAINER . example
+containers are `mkv` and `webm`.
+
+`--codec`|`-e` CODEC  
+set the option **video_codec** to CODEC. Defaults to `h264`
+(or `vp8` for **webm**).
 
 `--help`|`-h`  
 Show help and exit.
@@ -119,7 +133,17 @@ Show version and exit.
 
 ## updates
 
+### 2020.07.07.16
+Added three new commanline options: `--mute`,
+`--container`, `--codec`
+
+### 2020.06.22.25
+
+changed order that stop event happens, event is now
+executed after the message 'quit' is  sent.
+
 ### 2020.06.22.1
+
 initial release
 
 

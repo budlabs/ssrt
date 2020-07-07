@@ -1,0 +1,39 @@
+#!/bin/bash
+
+src="$1"
+
+srcn="${src##*/}" srcd="${src%/*}"
+trg="$srcd/${srcn%.*}.webm"
+
+duration="$(ffprobe -v error                               \
+                    -show_entries format=duration          \
+                    -of default=noprint_wrappers=1:nokey=1 \
+                    "$src"
+           )"
+
+prompt="duration: ${duration%.*}s, max size in MB: " 
+# size="$(menu -p "$prompt" -f 10)"
+size=5
+echo "$duration"
+
+[[ -z $size  ]] && exit
+
+polify --module timer "converting..."
+
+bitrate="$(echo "${size}" "$duration" \
+          | awk '{
+            # reduce requested size 11% * 1M , * 8 (bits)
+            size = $1 *  0.89 * 1e6 * 8
+            print size/$2 
+          }')"
+echo "$bitrate"
+
+       # -map 0 -map -0:a        \
+ffmpeg -i "$src"               \
+       -an \
+       -f webm -c:v libvpx     \
+       -b:v "$bitrate" -crf 18 \
+       "$trg" -hide_banner || exit 1
+
+polify --module timer --clear
+echo "$trg"

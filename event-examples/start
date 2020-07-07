@@ -1,3 +1,10 @@
 #!/bin/bash
 
 polybar-timer
+
+# unmute the mic before starting recording
+pactl set-source-mute @DEFAULT_SOURCE@ off
+
+# stop xbanish
+pidof xbanish > /dev/null && pkill xbanish
+
