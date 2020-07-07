@@ -1,5 +1,5 @@
 .nh
-.TH SSRT 1 2020\-06\-22 Linux "User Manuals"
+.TH SSRT 1 2020\-07\-07 Linux "User Manuals"
 .SH NAME
 .PP
 \fB\fCssrt\fR \- simplescreenreocrder \- now even simpler
@@ -9,7 +9,7 @@
 .RS
 
 .nf
-ssrt [\-\-pause|\-p] [\-\-delay|\-d SECONDS] [\-\-select|\-s] [\-\-config\-dir|\-c DIR] [\-\-input\-file|\-i FILE]
+ssrt [\-\-pause|\-p] [\-\-delay|\-d SECONDS] [\-\-select|\-s] [\-\-config\-dir|\-c DIR] [\-\-input\-file|\-i FILE] [\-\-mute|\-m] [\-\-container|\-n CONTAINER] [\-\-codec|\-e CODEC]  
 ssrt \-\-help|\-h
 ssrt \-\-version|\-v
 
@@ -68,6 +68,24 @@ recording is running.
 \fB\fCecho record\-pause > /tmp/ssrt/in\fR . See
 simplescreenrecorder man page or \fB\fC\-\-help\fR for list
 of available commands.
+
+.PP
+\fB\fC\-\-mute\fR|\fB\fC\-m\fR
+.br
+set the option \fBaudio\_enabled\fP to false, and no
+sound will be recorded.
+
+.PP
+\fB\fC\-\-container\fR|\fB\fC\-n\fR CONTAINER
+.br
+set the option \fBcontainer\fP to CONTAINER .
+example containers are \fB\fCmkv\fR and \fB\fCwebm\fR\&.
+
+.PP
+\fB\fC\-\-codec\fR|\fB\fC\-e\fR CODEC
+.br
+set the option \fBvideo\_codec\fP to CODEC. Defaults
+to \fB\fCh264\fR (or \fB\fCvp8\fR for \fBwebm\fP).
 
 .PP
 \fB\fC\-\-help\fR|\fB\fC\-h\fR

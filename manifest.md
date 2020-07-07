@@ -1,8 +1,8 @@
 ---
 description: >
   simplescreenreocrder - now even simpler
-updated:       2020-06-22
-version:       2020.06.22.25
+updated:       2020-07-07
+version:       2020.07.07.15
 author:        budRich
 repo:          https://github.com/budlabs/ssrt
 created:       2020-06-19
@@ -14,7 +14,7 @@ environ:
     SSR_CONFIG_DIR:  $HOME/.ssr
     SSRT_INPUT_FILE: /tmp/ssrt/in
 synopsis: |
-    [--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR] [--input-file|-i FILE]
+    [--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR] [--input-file|-i FILE] [--mute|-m] [--container|-n CONTAINER] [--codec|-e CODEC]  
     --help|-h
     --version|-v
 ...

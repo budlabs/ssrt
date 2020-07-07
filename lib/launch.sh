@@ -2,20 +2,33 @@
 
 launch() {
 
-  declare -i del=${__o[delay]}
+  declare -i delay=${__o[delay]}
   local delevent="$_confdir/events/delay"
+  local mute codec
+
   mkdir -p "${_infile%/*}"
   echo record-start > "$_infile"
 
   area "${__o[select]:+fixed}"
 
+  # --mute -> audio_enable = false
+  mute=${__o[mute]:+false}
+  configmod audio_enabled "${mute:=true}"
+
+  [[ -n ${__o[container]} ]] && {
+    [[ ${__o[container]} = webm ]] && codec=vp8
+    configmod container "${__o[container]}"
+  }
+
+  configmod video_codec "${__o[codec]:-${codec:-h264}}"
+
   {
 
-    ((del)) && {
+    ((delay)) && {
       if [[ -x $delevent ]]; then
-        PATH="${delevent%/*}/lib:$PATH" "$delevent" "$del"
+        PATH="${delevent%/*}/lib:$PATH" "$delevent" "$delay"
       else
-        sleep "$del"
+        sleep "$delay"
       fi
     }
 

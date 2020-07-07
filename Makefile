@@ -1,22 +1,21 @@
-SCRIPT  = ssrt
-MANPAGE = $(SCRIPT).1
-PREFIX  = /usr
-DESTDIR =
-INSTDIR = $(DESTDIR)$(PREFIX)
-INSTBIN = $(INSTDIR)/bin
-INSTMAN = $(INSTDIR)/share/man/man1
+PROGNM  ?= ssrt
+PREFIX  ?= /usr
+BINDIR  ?= $(PREFIX)/bin
+SHRDIR  ?= $(PREFIX)/share
+MANDIR  ?= $(SHRDIR)/man/man1
 
-install:
-	test -d $(INSTDIR) || mkdir -p $(INSTDIR)
-	test -d $(INSTBIN) || mkdir -p $(INSTBIN)
-	test -d $(INSTMAN) || mkdir -p $(INSTMAN)
+MANPAGE  = $(PROGNM).1
 
-	install -m 0755 $(SCRIPT)  $(INSTBIN)
-	install -m 0644 $(MANPAGE) $(INSTMAN)
 .PHONY: install
+install: $(PROGNM).out
 
+	install -Dm755 $(PROGNM)  -t $(DESTDIR)$(BINDIR)
+	install -Dm644 $(MANPAGE) -t $(DESTDIR)$(MANDIR)
+	install -Dm644 LICENSE    -t $(DESTDIR)$(SHRDIR)/licenses/$(PROGNM)
 
-uninstall:
-	$(RM) $(INSTBIN)/$(SCRIPT)
-	$(RM) $(INSTMAN)/$(MANPAGE)
 .PHONY: uninstall
+uninstall:
+	rm $(DESTDIR)$(BINDIR)/$(PROGNM)
+	rm -rf $(DESTDIR)$(ASSETDIR)
+	rm $(DESTDIR)$(MANDIR)/$(MANPAGE)
+	rm -rf $(DESTDIR)$(SHRDIR)/licenses/$(PROGNM)

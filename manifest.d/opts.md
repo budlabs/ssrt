@@ -19,3 +19,12 @@ Override the environment variable **SSR_CONFIG_DIR**. Defaults to `~/.ssr` . Thi
 # options-input-file-description
 Override the environment variable **SSRT_INPUT_FILE**. Defaults to `/tmp/ssrt/in` . Commands can be appended to this file while the recording is running.  
 `echo record-pause > /tmp/ssrt/in` . See simplescreenrecorder man page or `--help` for list of available commands.
+
+# options-mute-description
+set the option **audio_enabled** to false, and no sound will be recorded.
+
+# options-container-description
+set the option **container** to CONTAINER . example containers are `mkv` and `webm`.
+
+# options-codec-description
+set the option **video_codec** to CODEC. Defaults to `h264` (or `vp8` for **webm**).

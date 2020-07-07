@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-ssrt - version: 2020.06.22.25
-updated: 2020-06-22 by budRich
+ssrt - version: 2020.07.07.15
+updated: 2020-07-07 by budRich
 EOB
 }
 
@@ -22,7 +22,7 @@ ssrt - simplescreenreocrder - now even simpler
 
 SYNOPSIS
 --------
-ssrt [--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR] [--input-file|-i FILE]
+ssrt [--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR] [--input-file|-i FILE] [--mute|-m] [--container|-n CONTAINER] [--codec|-e CODEC]  
 ssrt --help|-h
 ssrt --version|-v
 
@@ -60,7 +60,24 @@ Override the environment variable
 SSRT_INPUT_FILE. Defaults to /tmp/ssrt/in .
 Commands can be appended to this file while the
 recording is running.  
-echo record-pause > /tmp/ssrt/in . See simplescreenrecorder man page or --help for list of available commands.
+echo record-pause > /tmp/ssrt/in . See
+simplescreenrecorder man page or --help for list
+of available commands.
+
+
+--mute|-m  
+set the option audio_enabled to false, and no
+sound will be recorded.
+
+
+--container|-n CONTAINER  
+set the option container to CONTAINER . example
+containers are mkv and webm.
+
+
+--codec|-e CODEC  
+set the option video_codec to CODEC. Defaults to
+h264 (or vp8 for webm).
 
 --help|-h  
 Show help and exit.
@@ -80,8 +97,8 @@ done
 declare -A __o
 options="$(
   getopt --name "[ERROR]:ssrt" \
-    --options "pd:sc:i:hv" \
-    --longoptions "pause,delay:,select,config-dir:,input-file:,help,version," \
+    --options "pd:sc:i:mn:e:hv" \
+    --longoptions "pause,delay:,select,config-dir:,input-file:,mute,container:,codec:,help,version," \
     -- "$@" || exit 77
 )"
 
@@ -95,6 +112,9 @@ while true; do
     --select     | -s ) __o[select]=1 ;; 
     --config-dir | -c ) __o[config-dir]="${2:-}" ; shift ;;
     --input-file | -i ) __o[input-file]="${2:-}" ; shift ;;
+    --mute       | -m ) __o[mute]=1 ;; 
+    --container  | -n ) __o[container]="${2:-}" ; shift ;;
+    --codec      | -e ) __o[codec]="${2:-}" ; shift ;;
     --help       | -h ) ___printhelp && exit ;;
     --version    | -v ) ___printversion && exit ;;
     -- ) shift ; break ;;

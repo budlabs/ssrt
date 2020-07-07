@@ -5,6 +5,11 @@ _previewcommand=mpv
 
 ERX() { >&2 echo "$*" && exit 77 ;}
 
+# mute the mic
+pactl set-source-mute @DEFAULT_SOURCE@ on
+
+ifcmd xbanish && xbanish 2&> /dev/null &
+
 [[ -f $opf ]] || ERX could not find output file "$opf"
 ifcmd "$_previewcommand" || choice=Yes
 polybar-timer -s
@@ -13,6 +18,7 @@ while [[ ${choice:=Maybe} = Maybe ]]; do
   choice=$(menu -p "Save file? " Yes No Maybe New)
   : "${choice:=No}"
 done
+
 
 [[ $choice = Yes ]] && save "$opf"
 rm -f "$opf"
