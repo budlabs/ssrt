@@ -36,8 +36,6 @@ some examples:
 - display notifications on pause and delay
 
 
-See the live action raw uncut demonstration video on
-**youtube**: <https://----->
 
 [simplescreenrecorder]: https://www.maartenbaert.be/simplescreenrecorder/
 
@@ -48,9 +46,12 @@ See the live action raw uncut demonstration video on
 If you use **Arch Linux** you can get **ssrt** from
 [AUR](https://aur.archlinux.org/packages/ssrt/).  
 
-**ssrt** have no dependencies and all you need is the
-`ssrt` script in your PATH. Use the Makefile to do a
-systemwide installation of both the script and the manpage.  
+**ssrt** is a **bash** script and beside `bash(1)` and
+`simplescreenrecorder(1)`, the only other external commands
+needed are `gawk(1)`, `slop(1)`, and `xrandr(1)`.  
+
+Use the **Makefile** to do a systemwide installation of
+both the script and the manpage.  
 
 (*configure the installation destination in the Makefile,
 if needed*)
@@ -133,7 +134,7 @@ Show version and exit.
 
 ## updates
 
-### 2020.07.07.18
+### 2020.07.07.19
 Added three new commanline options: `--mute`,
 `--container`, `--codec`
 
