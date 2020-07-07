@@ -2,14 +2,14 @@
 description: >
   simplescreenreocrder - now even simpler
 updated:       2020-07-07
-version:       2020.07.07.18
+version:       2020.07.07.19
 author:        budRich
 repo:          https://github.com/budlabs/ssrt
 created:       2020-06-19
 type:          default
 license:       bsd-2-clause
 dependencies:  [simplescreenrecorder, bash, gawk, xrandr, slop]
-see-also:      [bash(1), awk(1), simplescreenrecorder(1), xrandr(1), slop(1)]
+see-also:      [bash(1), gawk(1), simplescreenrecorder(1), xrandr(1), slop(1)]
 environ:
     SSR_CONFIG_DIR:  $HOME/.ssr
     SSRT_INPUT_FILE: /tmp/ssrt/in
