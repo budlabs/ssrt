@@ -133,7 +133,12 @@ Show version and exit.
 
 ## updates
 
+### 2020.07.07.16
+Added three new commanline options: `--mute`,
+`--container`, `--codec`
+
 ### 2020.06.22.25
+
 changed order that stop event happens, event is now
 executed after the message 'quit' is  sent.
 
