@@ -16,6 +16,5 @@ install:
 .PHONY: uninstall
 uninstall:
 	rm $(DESTDIR)$(BINDIR)/$(PROGNM)
-	rm -rf $(DESTDIR)$(ASSETDIR)
 	rm $(DESTDIR)$(MANDIR)/$(MANPAGE)
 	rm -rf $(DESTDIR)$(SHRDIR)/licenses/$(PROGNM)
