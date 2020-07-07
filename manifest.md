@@ -2,7 +2,7 @@
 description: >
   simplescreenreocrder - now even simpler
 updated:       2020-07-07
-version:       2020.07.07.16
+version:       2020.07.07.17
 author:        budRich
 repo:          https://github.com/budlabs/ssrt
 created:       2020-06-19

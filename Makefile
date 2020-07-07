@@ -7,7 +7,7 @@ MANDIR  ?= $(SHRDIR)/man/man1
 MANPAGE  = $(PROGNM).1
 
 .PHONY: install
-install: $(PROGNM).out
+install:
 
 	install -Dm755 $(PROGNM)  -t $(DESTDIR)$(BINDIR)
 	install -Dm644 $(MANPAGE) -t $(DESTDIR)$(MANDIR)

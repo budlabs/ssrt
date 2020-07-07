@@ -133,7 +133,7 @@ Show version and exit.
 
 ## updates
 
-### 2020.07.07.16
+### 2020.07.07.17
 Added three new commanline options: `--mute`,
 `--container`, `--codec`
 
