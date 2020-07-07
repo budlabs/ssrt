@@ -7,7 +7,7 @@ MANDIR  ?= $(SHRDIR)/man/man1
 MANPAGE  = $(PROGNM).1
 
 .PHONY: install
-install: $(PROGNM).out
+install:
 
 	install -Dm755 $(PROGNM)  -t $(DESTDIR)$(BINDIR)
 	install -Dm644 $(MANPAGE) -t $(DESTDIR)$(MANDIR)
@@ -16,6 +16,5 @@ install: $(PROGNM).out
 .PHONY: uninstall
 uninstall:
 	rm $(DESTDIR)$(BINDIR)/$(PROGNM)
-	rm -rf $(DESTDIR)$(ASSETDIR)
 	rm $(DESTDIR)$(MANDIR)/$(MANPAGE)
 	rm -rf $(DESTDIR)$(SHRDIR)/licenses/$(PROGNM)
