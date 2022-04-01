@@ -1,0 +1,20 @@
+options=$(getopt \
+  --name "[ERROR]:ssrt" \
+  --options "o:,v,h" \
+  --longoptions "hello:,version,help"  -- "$@"
+) || exit 98
+
+eval set -- "$options"
+unset options
+
+while true; do
+  case "$1" in
+    --help    | -h ) __print_help && exit ;;
+    --version | -v ) __print_version && exit ;;
+    --hello   | -o ) _o[hello]=$2 ; shift ;;
+    -- ) shift ; break ;;
+    *  ) break ;;
+  esac
+  shift
+done
+

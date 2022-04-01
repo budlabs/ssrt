@@ -1,0 +1,22 @@
+
+declare -A _o
+
+[[ $* =~ --verbose ]] && _o[verbose]=1
+[[ $* =~ --dryrun ]]  && _o[dryrun]=1
+: "${_o[verbose]:=$BASHBUD_VERBOSE}"
+
+[[ $BASHBUD_LOG ]] && {
+  [[ -f $BASHBUD_LOG ]] || mkdir -p "${BASHBUD_LOG%/*}"
+  exec 2>> "$BASHBUD_LOG"
+}
+
+((_o[verbose] && ! _o[dryrun])) && {
+  ___t=$(( 10#${EPOCHREALTIME//[!0-9]} ))
+  for ((___arg=0; ___arg<${#@}+1;___arg++)); do
+    [[ ${!___arg} == --verbose ]] && break
+  done
+  printf -v ___cmd "%s " "ssrt" "${@:1:___arg}"
+  unset -v ___arg
+  >&2 echo ">>> $___cmd"
+}
+

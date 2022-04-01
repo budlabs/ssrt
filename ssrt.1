@@ -1,124 +1,59 @@
-.nh
-.TH SSRT 1 2020\-07\-07 Linux "User Manuals"
-.SH NAME
+.\" -*- mode: troff; coding: utf-8 -*-
+.TH "ssrt" "1" "2022-04-01" "" ""
+.SH
+ssrt
+.LP
+short description of the script
+.LP
+\l'2i'
+.LP
+usage: ssrt [OPTIONS]
+.LP
+.EX
+-o, --hello WORD | short description          
+-v, --version    | print version info and exit
+-h, --help       | print help and exit        
+.EE
+.SH
+USAGE
+.LP
+This is just a boilerplate.  \fBbold\fR \fIitalic\fR
+and other \fCmarkdown\fR options are supported.  
 .PP
-\fB\fCssrt\fR \- simplescreenreocrder \- now even simpler
-
-.SH SYNOPSIS
-.PP
-.RS
-
-.nf
-ssrt [\-\-pause|\-p] [\-\-delay|\-d SECONDS] [\-\-select|\-s] [\-\-config\-dir|\-c DIR] [\-\-input\-file|\-i FILE] [\-\-mute|\-m] [\-\-container|\-n CONTAINER] [\-\-codec|\-e CODEC]  
-ssrt \-\-help|\-h
-ssrt \-\-version|\-v
-
-.fi
-.RE
-
-.SH DESCRIPTION
-.PP
-\fIevent scripts\fP are stored in
-\fBSSR\_CONFIG\_DIR\fP/events , as executable files
-with the same name as the event can be placed.
-When \fBssrt\fP is launched for the first time a
-sample \fB\fCevents\fR directory will be created but the
-scripts are \fI"empty"\fP\&.
-
-.SH OPTIONS
-.PP
-\fB\fC\-\-pause\fR|\fB\fC\-p\fR
+dependencies:
 .br
-Toggle play/pause of an ongoing recording or
-start a new recording if there is none.
-
-.PP
-\fB\fC\-\-delay\fR|\fB\fC\-d\fR SECONDS
+- make, bash, gawk
 .br
-Adds a delay in SECONDS (sleep) before starting a
-new recording. Has no effect when stopping a
-recording or toggling play/pause. This will also
-trigger the \fBdelay event\fP and pass SECONDS as
-the first argument.
-
-.PP
-\fB\fC\-\-select\fR|\fB\fC\-s\fR
+- \fClowdown\fR , for markdown conversion  
+.IP "\[u2611]" 2
+easy peasy
 .br
-Execute \fB\fCslop(1)\fR before starting a recording for
-selection of area to record. Without this option
-the full active monitor will be recorded.
-
-.PP
-\fB\fC\-\-config\-dir\fR|\fB\fC\-c\fR DIR
+.if n \
+.sp -1
+.if t \
+.sp -0.25v
+.IP "\[u2610]" 2
+\fBmake\fR it your own
+.SH
+OPTIONS
+.SS
+\fC-o\fR, \fC--hello\fR   WORD
+.LP
+\fC--hello\fR long description
 .br
-Override the environment variable
-\fBSSR\_CONFIG\_DIR\fP\&. Defaults to \fB\fC\~/.ssr\fR . This
-will be the directory where the statsfile,
-configfile and \fBevents directory\fP will be stored
-and created.
-
-.PP
-\fB\fC\-\-input\-file\fR|\fB\fC\-i\fR FILE
+this is the long description for \fC--hello\fR
 .br
-Override the environment variable
-\fBSSRT\_INPUT\_FILE\fP\&. Defaults to \fB\fC/tmp/ssrt/in\fR .
-Commands can be appended to this file while the
-recording is running.
+first line in \fC./docs/hello\fR is the short description.
+.SH
+SEE ALSO
+.LP
+Project site: 
+.SH
+CONTACT
+.LP
+File bugs and feature requests at the following URL:
 .br
-\fB\fCecho record\-pause > /tmp/ssrt/in\fR . See
-simplescreenrecorder man page or \fB\fC\-\-help\fR for list
-of available commands.
-
-.PP
-\fB\fC\-\-mute\fR|\fB\fC\-m\fR
-.br
-set the option \fBaudio\_enabled\fP to false, and no
-sound will be recorded.
-
-.PP
-\fB\fC\-\-container\fR|\fB\fC\-n\fR CONTAINER
-.br
-set the option \fBcontainer\fP to CONTAINER .
-example containers are \fB\fCmkv\fR and \fB\fCwebm\fR\&.
-
-.PP
-\fB\fC\-\-codec\fR|\fB\fC\-e\fR CODEC
-.br
-set the option \fBvideo\_codec\fP to CODEC. Defaults
-to \fB\fCh264\fR (or \fB\fCvp8\fR for \fBwebm\fP).
-
-.PP
-\fB\fC\-\-help\fR|\fB\fC\-h\fR
-.br
-Show help and exit.
-
-.PP
-\fB\fC\-\-version\fR|\fB\fC\-v\fR
-.br
-Show version and exit.
-
-.SH ENVIRONMENT
-.PP
-\fB\fCSSR\_CONFIG\_DIR\fR
-
-.PP
-defaults to: $HOME/.ssr
-
-.PP
-\fB\fCSSRT\_INPUT\_FILE\fR
-
-.PP
-defaults to: /tmp/ssrt/in
-
-.SH DEPENDENCIES
-.PP
-\fB\fCsimplescreenrecorder\fR \fB\fCbash\fR \fB\fCgawk\fR \fB\fCxrandr\fR
-\fB\fCslop\fR
-
-.PP
-budRich https://github.com/budlabs/ssrt
-\[la]https://github.com/budlabs/ssrt\[ra]
-
-.SH SEE ALSO
-.PP
-bash(1), gawk(1), simplescreenrecorder(1), xrandr(1), slop(1),
+.SH
+AUTHOR
+.LP
+ssrt was written by  of 

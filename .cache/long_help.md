@@ -1,0 +1,11 @@
+
+# OPTIONS
+
+
+
+## `-o`, `--hello`   WORD   
+
+`--hello` long description  
+this is the long description for `--hello`  
+first line in `./docs/hello` is the short description.
+
