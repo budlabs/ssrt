@@ -1,0 +1,5 @@
+set ssr conifg directory
+
+Defaults to `~/.ssr` .
+This option overrides the environment-variable
+**SSR_CONFIG_DIR**.

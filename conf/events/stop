@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# this event gets triggered when recording stops.
+
+# the event varialbe $SSR_OUTPUTFILE contains the
+# full path to the current recording.
+

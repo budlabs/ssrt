@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# this event gets triggered when ssrt is executed
+# with the --pause option when there is an ongoing
+# recording i.e. when a recording is paused.
+
+# the event varialbe $SSR_OUTPUTFILE contains the
+# full path to the current recording.

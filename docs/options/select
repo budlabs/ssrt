@@ -1,0 +1,4 @@
+select recording area before recording starts.
+
+This option executes `slop(1)` . Without this option
+the full active monitor will be recorded.  
