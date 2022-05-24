@@ -20,5 +20,3 @@ while true; do
   shift
 done
 
-((BASHBUD_VERBOSE)) && _o[verbose]=1 #bashbud
-

@@ -1,8 +1,6 @@
-#!/bin/bash
 
-__print_help()
-{
-  cat << 'EOB' >&3  
+__print_help() {
+  cat << 'EOB' >&2  
 usage: ssrt [OPTIONS]
 
 
