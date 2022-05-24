@@ -1,9 +1,12 @@
-This is just a boilerplate.  **bold** *italic*
-and other `markdown` options are supported.  
 
-dependencies:  
-  - make, bash, gawk  
-  - `lowdown` , for markdown conversion  
+*event scripts* are stored in 
+**SSR\_CONFIG\_DIR**/events\* ,
+as executable files with the same name as the
+event (delay|pause|resume|start|stop).
+When **ssrt** is launched for the first time a sample
+`events` directory will be created but
+the scripts are *"empty"*.
 
-- [x] easy peasy  
-- [ ] **make** it your own
+> \* SSR\_CONFIG\_DIR defaults to simplescreenrecorders
+> configuration directory: `~/.ssr`
+

@@ -1,7 +1,29 @@
 #!/bin/bash
 
+# Copyright (c) 2020-2022, budRich of budlabs  
+# SPDX-License-Identifier: BSD-2-Clause
+
+: "${SSR_CONFIG_DIR:=$HOME/.ssr}"
+: "${SSRT_INPUT_FILE:=/tmp/ssrt/in}"
+
 main(){
-  echo "hello ${_o[hello]:-,option "--hello" have no WORD}!"
+  declare -i _ssrpid 
+  declare -r _confdir=${_o[config-dir]:-$SSR_CONFIG_DIR}
+  declare -r _ssrcnf="$_confdir"/settings.conf
+  declare -r _ssrsts="$_confdir"/stats
+  declare -r _infile=${_o[input-file]:-$SSRT_INPUT_FILE}
+
+  _ssrpid=$(pidof simplescreenrecorder)
+
+  [[ -d "$_confdir/events" ]] || _createconf "$_confdir"
+
+  if ((_o[pause])); then
+    play-toggle
+  elif ((_ssrpid)); then
+    stop
+  else
+    launch
+  fi
 }
 
 __dir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")") #bashbud

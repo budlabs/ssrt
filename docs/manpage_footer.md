@@ -1,7 +1,6 @@
-# SEE ALSO
-Project site: <address>
-# CONTACT
+## CONTACT
 File bugs and feature requests at the following URL:  
-<address>
-# AUTHOR
-ssrt was written by  of 
+https://github.com/budlabs/ssrt/issues
+
+## COPYRIGHT
+ 

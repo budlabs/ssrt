@@ -1,59 +1,58 @@
-.\" -*- mode: troff; coding: utf-8 -*-
-.TH "ssrt" "1" "2022-04-01" "" ""
-.SH
-ssrt
-.LP
-short description of the script
-.LP
-\l'2i'
-.LP
-usage: ssrt [OPTIONS]
-.LP
-.EX
--o, --hello WORD | short description          
--v, --version    | print version info and exit
--h, --help       | print help and exit        
-.EE
-.SH
-USAGE
-.LP
-This is just a boilerplate.  \fBbold\fR \fIitalic\fR
-and other \fCmarkdown\fR options are supported.  
+.nh
+.TH SSRT  1 2022-04-04 budlabs "User Manuals"
+.SH NAME
 .PP
-dependencies:
+ssrt - simplescreenreocrder - now even simpler
+
+.SH USAGE
+.PP
+ssrt [OPTIONS]
+
+.PP
+\fIevent scripts\fP are stored in
+\fBSSR_CONFIG_DIR\fP/events* ,
+as executable files with the same name as the
+event (delay|pause|resume|start|stop).
+When \fBssrt\fP is launched for the first time a sample
+\fB\fCevents\fR directory will be created but
+the scripts are \fI"empty"\fP\&.
+
+.PP
+.RS
+
+.PP
+* SSR_CONFIG_DIR defaults to simplescreenrecorders
+configuration directory: \fB\fC~/.ssr\fR
+
+.RE
+
+.SH OPTIONS
+.PP
+.RS
+
+.nf
+-h, --help     | print help and exit  
+-v, --version  | print version info and exit  
+
+.fi
+.RE
+
+.SH CONTACT
+.PP
+Send bugs and feature requests to:
 .br
-- make, bash, gawk
+https://github.com/budlabs/ssrt/issues
+
+.SH COPYRIGHT
+.PP
+Copyright (c) 2020-2022, budRich of budlabs
 .br
-- \fClowdown\fR , for markdown conversion  
-.IP "\[u2611]" 2
-easy peasy
-.br
-.if n \
-.sp -1
-.if t \
-.sp -0.25v
-.IP "\[u2610]" 2
-\fBmake\fR it your own
-.SH
-OPTIONS
-.SS
-\fC-o\fR, \fC--hello\fR   WORD
-.LP
-\fC--hello\fR long description
-.br
-this is the long description for \fC--hello\fR
-.br
-first line in \fC./docs/hello\fR is the short description.
-.SH
-SEE ALSO
-.LP
-Project site: 
-.SH
-CONTACT
-.LP
+SPDX-License-Identifier: BSD-2-Clause
+
+.SH CONTACT
+.PP
 File bugs and feature requests at the following URL:
 .br
-.SH
-AUTHOR
-.LP
-ssrt was written by  of 
+https://github.com/budlabs/ssrt/issues
+
+.SH COPYRIGHT

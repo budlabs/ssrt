@@ -2,25 +2,25 @@
 
 launch() {
 
-  declare -i delay=${__o[delay]}
+  declare -i delay=${_o[delay]}
   local delevent="$_confdir/events/delay"
   local mute codec
 
   mkdir -p "${_infile%/*}"
   echo record-start > "$_infile"
 
-  area "${__o[select]:+fixed}"
+  area "${_o[select]:+fixed}"
 
   # --mute -> audio_enable = false
-  mute=${__o[mute]:+false}
+  mute=${_o[mute]:+false}
   configmod audio_enabled "${mute:=true}"
 
-  [[ -n ${__o[container]} ]] && {
-    [[ ${__o[container]} = webm ]] && codec=vp8
-    configmod container "${__o[container]}"
+  [[ -n ${_o[container]} ]] && {
+    [[ ${_o[container]} = webm ]] && codec=vp8
+    configmod container "${_o[container]}"
   }
 
-  configmod video_codec "${__o[codec]:-${codec:-h264}}"
+  configmod video_codec "${_o[codec]:-${codec:-h264}}"
 
   {
 

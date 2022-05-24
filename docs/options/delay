@@ -1,0 +1,6 @@
+delay start of recording
+
+This option has no effect when stopping or toggling
+play/pause. When it do have effect it will also
+trigger the **delay event** and pass SECONDS as
+the first argument to the delay event script.  
