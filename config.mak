@@ -1,8 +1,8 @@
 NAME         := ssrt
 DESCRIPTION  := simplescreenreocrder - now even simpler
-VERSION      := 2022.04.04.04
+VERSION      := 2022.05.24.2
 CREATED      := 2020-06-19
-UPDATED      := 2022-04-04
+UPDATED      := 2022-05-24
 AUTHOR       := budRich
 ORGANISATION := budlabs
 CONTACT      := https://github.com/budlabs/ssrt
