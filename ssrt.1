@@ -1,5 +1,5 @@
 .nh
-.TH SSRT  1 2022-05-24 budlabs "User Manuals"
+.TH SSRT   2022-06-14 budlabs "User Manuals"
 .SH NAME
 .PP
 ssrt - simplescreenreocrder - now even simpler
@@ -31,11 +31,68 @@ configuration directory: \fB\fC~/.ssr\fR
 .RS
 
 .nf
--h, --help     | print help and exit  
--v, --version  | print version info and exit  
+-e, --codec      CODEC     | CODEC defaults to h264 (or vp8 for webm).  
+-c, --config-dir DIR       | set ssr conifg directory
+-n, --container  CONTAINER | set CONTAINER type. example containers: mkv and webm.  
+-d, --delay      SECONDS   | delay start of recording
+-h, --help                 | print help and exit  
+-i, --input-file FILE      | change default (/tmp/ssrt/in) inputfile. 
+-m, --mute                 | disables audio in recording  
+-p, --pause                | toggle play/pause or start a new recording.  
+-s, --select               | select recording area before recording starts.
+-v, --version              | print version info and exit  
 
 .fi
 .RE
+
+.SS -c, --config-dir DIR
+.PP
+Defaults to \fB\fC~/.ssr\fR .
+This option overrides the environment-variable
+\fBSSR_CONFIG_DIR\fP\&.
+
+.SS -d, --delay      SECONDS
+.PP
+This option has no effect when stopping or toggling
+play/pause. When it do have effect it will also
+trigger the \fBdelay event\fP and pass SECONDS as
+the first argument to the delay event script.
+
+.SS -i, --input-file FILE
+.PP
+Commands can be sent to this file while the recording.
+Below are whats listed in \fB\fCsimplescreenrecorder(1)\fR:
+
+.PP
+.RS
+
+.nf
+  record-start          Start the recording.
+  record-pause          Pause the recording.
+  record-cancel         Cancel the recording and delete the output file.
+  record-save           Finish the recording and save the output file.
+  schedule-activate     Activate the recording schedule.
+  schedule-deactivate   Deactivate the recording schedule.
+  window-show           Show the application window.
+  window-hide           Hide the application window.
+  quit                  Quit the application.
+
+.fi
+.RE
+
+.PP
+To send a command simple echo it to the input-file:
+.br
+\fB\fCecho record-pause > /tmp/ssrt/in\fR
+
+.PP
+This option overrides the environment
+variable \fBSSRT_INPUT_FILE\fP\&.
+
+.SS -s, --select
+.PP
+This option executes \fB\fCslop(1)\fR . Without this option
+the full active monitor will be recorded.
 
 .SH CONTACT
 .PP

@@ -1,2 +1,3 @@
+[--pause|-p] [--delay|-d SECONDS] [--select|-s] [--config-dir|-c DIR] [--input-file|-i FILE] [--mute|-m] [--container|-n CONTAINER] [--codec|-e CODEC]  
 --help|-h
 --version|-v
