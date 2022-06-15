@@ -1,0 +1,21 @@
+#!/bin/bash
+_src=$(realpath ${BASH_SOURCE[0]})
+_dir=${_src%/*}
+_name=${_dir##*/}
+
+[[ -d "$_dir"/func/ ]]      && to_watch+=("$_dir"/func/)
+[[ -d "$_dir"/conf/ ]]      && to_watch+=("$_dir"/conf/)
+[[ -d "$_dir"/docs/ ]]      && to_watch+=("$_dir"/docs/)
+[[ -f "$_dir"/$_name ]]     && to_watch+=("$_dir"/$_name)
+[[ -f "$_dir"/config.mak ]] && to_watch+=("$_dir"/config.mak)
+
+echo "$_name"
+while read -r ; do
+  clear
+  make && shellcheck "_$name"*
+done < <(
+  inotifywait --event close_write   \
+              --recursive --monitor \
+              --exclude '/_[^.]+$'  \
+              "${to_watch[@]}"
+)

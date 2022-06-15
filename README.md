@@ -60,8 +60,16 @@ updated: 2020-06-22 by budRich
 
 ## usage
     ssrt [OPTIONS]
-    -h, --help     | print help and exit  
-    -v, --version  | print version info and exit  
+    -e, --codec      CODEC     | CODEC defaults to h264 (or vp8 for webm).  
+    -c, --config-dir DIR       | set ssr conifg directory
+    -n, --container  CONTAINER | set CONTAINER type. example containers: mkv and webm.  
+    -d, --delay      SECONDS   | delay start of recording
+    -h, --help                 | print help and exit  
+    -i, --input-file FILE      | change default (/tmp/ssrt/in) inputfile. 
+    -m, --mute                 | disables audio in recording  
+    -p, --pause                | toggle play/pause or start a new recording.  
+    -s, --select               | select recording area before recording starts.
+    -v, --version              | print version info and exit  
 
 *event scripts* are stored in 
 **SSR\_CONFIG\_DIR**/events\* ,
