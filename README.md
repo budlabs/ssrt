@@ -1,3 +1,5 @@
+# MAINTAINED AT https://git.budlabs.xyz/bud/ssrt
+
 # ssrt - simplescreenreocrder - now even simpler
 Use [simplescreenrecorder] without using the GUI.
 
